@@ -18,12 +18,15 @@ set(
         test_SRCS
         gtest.cpp
         fasm/test_utils/test_utils.cpp
-        ../include/fasm/framework/symbol/symnode.h ../include/fasm/framework/symbol/symtable.h)
+        fasm/test_framework/test_function.cpp
+        fasm/test_framework/test_symbol.cpp
+)
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/fasm/utils
         ${PROJECT_SOURCE_DIR}/include/fasm/framework
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/function
+        ${PROJECT_SOURCE_DIR}/include/fasm/framework/symbol
 )
 
 link_directories(

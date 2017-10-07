@@ -13,7 +13,7 @@ int SymbolTable::addSymbol(const std::string &ident, unsigned int size, int stac
     if (getSymbol(ident, funcIndex).getIndex() != -1)     // 已存在同名符号且位于同一函数内（或与全局符号冲突）
         return -1;
     SymbolNode symNode(stackIndex, funcIndex, size);
-    symNode.setIndex((int)iTable.size());
+    symNode.setIndex((int)(iTable.size() + iGlobal.size()));
 
     // 根据该符号在栈区偏移量的正负确定该符号为全局／局部变量
     if (stackIndex >= 0)
@@ -33,7 +33,7 @@ SymbolNode SymbolTable::getSymbol(const std::string &ident, unsigned int funcInd
     // 按符号名和函数索引查询局部符号表
     auto lPair = iTable.find(std::make_pair(ident, funcIndex));
     if (lPair == iTable.end())
-        return SymbolNode();
+        return SymbolNode{};
     return lPair->second;
 }
 

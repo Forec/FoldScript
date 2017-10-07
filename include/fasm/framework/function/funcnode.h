@@ -26,6 +26,9 @@ public:
     void setIndex(int index) { iIndex = index; }
     void setParamCount(unsigned int paramCount) { iParamCount = paramCount; }
     void setLocalDataSize(unsigned int localDataSize) { iLocalDataSize = localDataSize; }
+    int getEntryPoint() { return iEntryPoint; }
+    unsigned int getParamCount() { return iParamCount; }
+    unsigned int getLocalDataSize() { return iLocalDataSize; }
 };
 
 #endif //FOLDSCRIPT_FUNCNODE_H
