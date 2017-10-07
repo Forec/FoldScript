@@ -16,9 +16,15 @@ enable_testing()
 
 set(
         test_SRCS
-        gtest.cpp)
+        gtest.cpp
+        fasm/test_utils/test_utils.cpp
+        ../include/fasm/framework/symbol/symnode.h ../include/fasm/framework/symbol/symtable.h)
 
-include_directories()
+include_directories(
+        ${PROJECT_SOURCE_DIR}/include/fasm/utils
+        ${PROJECT_SOURCE_DIR}/include/fasm/framework
+        ${PROJECT_SOURCE_DIR}/include/fasm/framework/function
+)
 
 link_directories(
         ${LIBRARY_OUTPUT_PATH}
@@ -27,7 +33,11 @@ link_directories(
 add_executable(runUnitTests gtest.cpp ${test_SRCS})
 
 # add all library below
-# target_link_libraries(runUnitTests ${Boost_LIBRARIES})
+target_link_libraries(
+        runUnitTests
+        fasm-utils
+        fasm-framework
+)
 
 target_link_libraries(runUnitTests gtest gtest_main)
 target_link_libraries(runUnitTests gmock gmock_main)
