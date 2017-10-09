@@ -5,7 +5,7 @@
 #ifndef FOLDSCRIPT_INSTR_H
 #define FOLDSCRIPT_INSTR_H
 
-#include "op.h"
+#include "../op.h"
 #include <vector>
 
 /*
@@ -16,12 +16,11 @@
  */
 
 struct Instr {
-    unsigned int iOpCode;
-    unsigned int iOpCount;
-    std::vector<Op> iOpList;
+    unsigned int uiOpCode;
+    unsigned int uiOpCount;
+    std::vector<Op> OpList;
     explicit Instr(unsigned int opCode, unsigned int opCount = 0);
     Instr(unsigned int opCode, unsigned int opCount, const std::vector<Op> &opList);
 };
-
 
 #endif //FOLDSCRIPT_INSTR_H

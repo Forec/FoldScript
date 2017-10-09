@@ -12,8 +12,7 @@ SymbolTable::SymbolTable() {
 int SymbolTable::addSymbol(const std::string &ident, unsigned int size, int stackIndex, unsigned int funcIndex) {
     if (getSymbol(ident, funcIndex).getIndex() != -1)     // 已存在同名符号且位于同一函数内（或与全局符号冲突）
         return -1;
-    SymbolNode symNode(stackIndex, funcIndex, size);
-    symNode.setIndex((int)(iTable.size() + iGlobal.size()));
+    SymbolNode symNode((int)(iTable.size() + iGlobal.size()), stackIndex, funcIndex, size);
 
     // 根据该符号在栈区偏移量的正负确定该符号为全局／局部变量
     if (stackIndex >= 0)

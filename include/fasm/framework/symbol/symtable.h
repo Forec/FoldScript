@@ -5,11 +5,10 @@
 #ifndef FOLDSCRIPT_SYMTABLE_H
 #define FOLDSCRIPT_SYMTABLE_H
 
-#include "symnode.h"
-#include <utility>
-#include <functional>
 #include <string>
 #include <unordered_map>
+#include "symnode.h"
+#include "../../utils/utils.h"
 
 /*
  * SymbolTable: 符号表
@@ -19,22 +18,6 @@
  * @addSymbol: 向符号表中添加全局／局部符号，若与已有符号冲突则返回 -1
  * @getSymbol: 根据符号名和符号所处的函数索引（若为全局符号则忽略）来确定符号信息
  */
-
-typedef std::pair<std::string, unsigned int> kpair;
-
-struct hash_func {
-    size_t operator()(const kpair &pair) const {
-        std::hash<std::string> h;
-        size_t string_hash = h(pair.first);
-        return string_hash + pair.second;
-    }
-};
-
-struct cmp_func {
-    bool operator()(const kpair &k1, const kpair &k2) const {
-        return k1.first == k2.first && k1.second == k2.second;
-    }
-};
 
 class SymbolTable {
 private:

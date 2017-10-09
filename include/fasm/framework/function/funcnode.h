@@ -18,17 +18,20 @@ class FuncNode {
 private:
     int iIndex;
     int iEntryPoint;
-    unsigned int iParamCount;
-    unsigned int iLocalDataSize;
+    unsigned int uiParamCount;
+    unsigned int uiLocalDataSize;
 public:
-    explicit FuncNode(int entryPoint, unsigned int paramCount = 0, unsigned int localDataSize = 0);
+    FuncNode() = default;
+    FuncNode(int entryPoint, unsigned int paramCount = 0, unsigned int localDataSize = 0);
+    FuncNode(int index, int entryPoint, unsigned int paramCount = 0, unsigned int localDataSize = 0);
+
     int getIndex() { return iIndex; }
     void setIndex(int index) { iIndex = index; }
-    void setParamCount(unsigned int paramCount) { iParamCount = paramCount; }
-    void setLocalDataSize(unsigned int localDataSize) { iLocalDataSize = localDataSize; }
+    void setParamCount(unsigned int paramCount) { uiParamCount = paramCount; }
+    void setLocalDataSize(unsigned int localDataSize) { uiLocalDataSize = localDataSize; }
     int getEntryPoint() { return iEntryPoint; }
-    unsigned int getParamCount() { return iParamCount; }
-    unsigned int getLocalDataSize() { return iLocalDataSize; }
+    unsigned int getParamCount() { return uiParamCount; }
+    unsigned int getLocalDataSize() { return uiLocalDataSize; }
 };
 
 #endif //FOLDSCRIPT_FUNCNODE_H

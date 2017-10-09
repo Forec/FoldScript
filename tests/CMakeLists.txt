@@ -20,6 +20,8 @@ set(
         fasm/test_utils/test_utils.cpp
         fasm/test_framework/test_function.cpp
         fasm/test_framework/test_symbol.cpp
+        fasm/test_framework/test_label.cpp
+        fasm/test_framework/test_instrlookup.cpp
 )
 
 include_directories(
@@ -27,6 +29,8 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/fasm/framework
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/function
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/symbol
+        ${PROJECT_SOURCE_DIR}/include/fasm/framework/label
+        ${PROJECT_SOURCE_DIR}/include/fasm/framework/instruction
 )
 
 link_directories(

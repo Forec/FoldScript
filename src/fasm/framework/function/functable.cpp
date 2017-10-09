@@ -8,21 +8,20 @@ FuncTable::FuncTable() {
     iTable.clear();
 }
 
-int FuncTable::addFunction(const std::string &name, int iEntryPoint) {
+int FuncTable::addFunction(const std::string &name, int entryPoint) {
     if (iTable.find(name) != iTable.end())    // 已存在同名函数，返回无效索引
         return -1;
-    FuncNode func(iEntryPoint);
-    func.setIndex((int)iTable.size());
+    FuncNode func((int)iTable.size(), entryPoint);
     iTable.insert(std::make_pair(name, func));
     return func.getIndex();
 }
 
-void FuncTable::setFunction(const std::string &name, unsigned int iParamCount, unsigned int iLocalDataSize) {
+void FuncTable::setFunction(const std::string &name, unsigned int paramCount, unsigned int localDataSize) {
     auto pair = iTable.find(name);
     if (pair == iTable.end())
         return;
-    pair->second.setParamCount(iParamCount);
-    pair->second.setLocalDataSize(iLocalDataSize);
+    pair->second.setParamCount(paramCount);
+    pair->second.setLocalDataSize(localDataSize);
 }
 
 FuncNode FuncTable::getFunction(const std::string &name) {

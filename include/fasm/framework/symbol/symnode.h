@@ -17,16 +17,17 @@
 class SymbolNode {
 private:
     int iIndex;
-    unsigned int iSize;
     int iStackIndex;
-    unsigned int iFuncIndex;
+    unsigned int uiSize;
+    unsigned int uiFuncIndex;
 public:
     SymbolNode();
     SymbolNode(int stackIndex, unsigned int funcIndex, unsigned int size = 1);
-    void setIndex(int index);
-    int getIndex();
-    int getStackIndex();
-    unsigned int getSize();
+    SymbolNode(int index, int stackIndex, unsigned int funcIndex, unsigned int size = 1);
+    void setIndex(int index) { iIndex = index; }
+    int getIndex() { return iIndex; }
+    int getStackIndex() { return iStackIndex; }
+    unsigned int getSize() { return uiSize; }
 };
 
 #endif //FOLDSCRIPT_SYMNODE_H

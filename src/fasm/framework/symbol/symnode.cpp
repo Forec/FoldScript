@@ -2,34 +2,23 @@
 // Created by 王耀 on 2017/10/7.
 //
 
+#include <new>
 #include "symnode.h"
 
 SymbolNode::SymbolNode() {
     iIndex = -1;
-    iSize = 1;
     iStackIndex = 0;
-    iFuncIndex = 0;
+    uiSize = 1;
+    uiFuncIndex = 0;
 }
 
 SymbolNode::SymbolNode(int stackIndex, unsigned int funcIndex, unsigned int size) {
-    iIndex = -1;
-    iSize = size;
-    iStackIndex = stackIndex;
-    iFuncIndex = funcIndex;
+    new (this)SymbolNode(-1, stackIndex, funcIndex, size);
 }
 
-void SymbolNode::setIndex(int index) {
+SymbolNode::SymbolNode(int index, int stackIndex, unsigned int funcIndex, unsigned int size) {
     iIndex = index;
-}
-
-int SymbolNode::getIndex() {
-    return iIndex;
-}
-
-int SymbolNode::getStackIndex() {
-    return iStackIndex;
-}
-
-unsigned int SymbolNode::getSize() {
-    return iSize;
+    iStackIndex = stackIndex;
+    uiSize = size;
+    uiFuncIndex = funcIndex;
 }
