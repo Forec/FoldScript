@@ -22,6 +22,7 @@ set(
         fasm/test_framework/test_symbol.cpp
         fasm/test_framework/test_label.cpp
         fasm/test_framework/test_instrlookup.cpp
+        fasm/test_framework/test_source.cpp
 )
 
 include_directories(
@@ -44,6 +45,7 @@ target_link_libraries(
         runUnitTests
         fasm-utils
         fasm-framework
+        fasm-lexer
 )
 
 target_link_libraries(runUnitTests gtest gtest_main)

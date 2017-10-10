@@ -15,6 +15,7 @@ private:
     std::vector<std::string> iTable;
 public:
     StringTable();
+    unsigned long getSize();
     unsigned int insert(const std::string & string);
 };
 

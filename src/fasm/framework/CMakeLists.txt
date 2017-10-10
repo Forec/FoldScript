@@ -1,15 +1,17 @@
 set(
         SRC_LIST
-        instruction/instr.cpp
         strtable.cpp
+        source.cpp
         function/functable.cpp
         function/funcnode.cpp
         symbol/symtable.cpp
         symbol/symnode.cpp
         label/labnode.cpp
         label/labtable.cpp
+        instruction/instr.cpp
         instruction/inslktable.cpp
-        instruction/instrlookup.cpp)
+        instruction/instrlookup.cpp
+)
 
 
 include_directories(

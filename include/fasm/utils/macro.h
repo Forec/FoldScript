@@ -6,6 +6,23 @@
 #define FOLDSCRIPT_MACRO_H
 
 /*
+ * 操作系统相关
+ */
+#define LINUX_CLASS
+
+#ifdef LINUX_CLASS
+#define CODE_LINE_DELIMITER '\n'
+#else
+#define CODE_LINE_DELIMITER "\r\n"
+#endif
+
+/*
+ * 词法相关分隔符定义
+ */
+#define CODE_STRING_DELIMITER '"'
+#define CODE_COMMENT_DELIMITER ';'
+
+/*
  * 操作数类型宏定义
  */
 
@@ -112,5 +129,39 @@
 
 #define INSTR_PAUSE                   0x20     // 控制指令
 #define INSTR_EXIT                    0x21
+
+/*
+ * 属性字类型
+ */
+#define TOKEN_TYPE_INT                0x00
+#define TOKEN_TYPE_FLOAT              0x01
+#define TOKEN_TYPE_STRING             0x02
+#define TOKEN_TYPE_QUOTE              0x03     // 双引号
+#define TOKEN_TYPE_IDENT              0x04     // 标识符
+#define TOKEN_TYPE_COLON              0x05     // 冒号
+#define TOKEN_TYPE_OPEN_BRACKET       0x06     // 左中括号
+#define TOKEN_TYPE_CLOSE_BRACKET      0x07     // 右中括号
+#define TOKEN_TYPE_COMMA              0x08     // 逗号
+#define TOKEN_TYPE_OPEN_BRACE         0x09     // 左大括号
+#define TOKEN_TYPE_CLOSE_BRACE        0x0A     // 右大括号
+#define TOKEN_TYPE_NEWLINE            0x0B     // 换行
+
+#define TOKEN_TYPE_INSTR		      0x0C	   // 指令
+
+#define TOKEN_TYPE_SETSTACKSIZE       0x0D     // SetStackSize 指令
+#define TOKEN_TYPE_VAR                0x0E     // 变量声明保留字
+#define TOKEN_TYPE_FUNC               0x0F     // 函数声明保留字
+#define TOKEN_TYPE_PARAM              0x10     // 参数声明保留字
+#define TOKEN_TYPE_REG_RETVAL         0x11     // _RetVar 寄存器
+
+#define TOKEN_TYPE_INVALID            0x12     // 非法属性字
+#define END_OF_TOKEN_STREAM           0x13     // 到达属性字流末尾
+
+/*
+ * 词法分析器状态
+ */
+#define LEX_STATE_NO_STRING           0x00     // 默认
+#define LEX_STATE_IN_STRING           0x01     // 字符串中
+#define LEX_STATE_END_STRING          0x02     // 字符串结束
 
 #endif //FOLDSCRIPT_MACRO_H

@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include "labtable.h"
 
-TEST(LabelTest, LabelTest_MANAGE_LABEL_TEST) {
+TEST(LabelTest, LabelTest_MANAGE_LABEL_Test) {
     LabelTable lt;
     EXPECT_EQ(0, lt.addLabel("label0", 12, 1));  // 添加函数索引 1 中的指令 12 处的标签 label0
     EXPECT_EQ(1, lt.addLabel("label0", 4, 2));   // 添加函数索引 2 中的指令 4 处的标签 label0

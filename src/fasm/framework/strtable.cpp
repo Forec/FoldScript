@@ -17,3 +17,7 @@ unsigned int StringTable::insert(const std::string &string) {
     iMap.insert(std::make_pair(string, iTable.size() - 1));
     return (unsigned int)iTable.size() - 1;
 }
+
+unsigned long StringTable::getSize() {
+    return iTable.size();
+}
