@@ -41,6 +41,16 @@
 #define OP_FLAG_TYPE_TARGET           (OP_FLAG_TYPE_MEM_REF | OP_FLAG_TYPE_REG)
 
 /*
+ * 元指令（保留字）
+ */
+#define GRAMMAR_SET_STACK_SIZE        "SETSTACKSIZE"  // 设置堆栈空间
+#define GRAMMAR_VAR                   "VAR"           // 声明变量
+#define GRAMMAR_FUNC                  "FUNC"          // 定义函数
+#define GRAMMAR_PARAM                 "PARAM"         // 声明参数
+#define GRAMMAR_RESULT_REGISTER       "_RETVAL"       // 返回值寄存器
+
+
+/*
  * 助记符宏定义
  */
 #define INSTR_NOP_STR                 "NOP"    // 空转指令

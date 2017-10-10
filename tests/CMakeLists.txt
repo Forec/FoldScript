@@ -23,6 +23,7 @@ set(
         fasm/test_framework/test_label.cpp
         fasm/test_framework/test_instrlookup.cpp
         fasm/test_framework/test_source.cpp
+        fasm/test_lexer/test_lexer.cpp
 )
 
 include_directories(
@@ -32,6 +33,7 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/symbol
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/label
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/instruction
+        ${PROJECT_SOURCE_DIR}/include/fasm/lexer
 )
 
 link_directories(
