@@ -26,12 +26,14 @@ SourceCode::SourceCode() {
 }
 
 bool SourceCode::initFromFile(const std::string &path) {
+    getInstance()->source.clear();
     // TODO: 读入代码
     initialized = true;
     return true;
 }
 
 void SourceCode::initFromString(const std::string &str) {
+    getInstance()->source.clear();
     if (str.empty()) {
         initialized = true;
         return;

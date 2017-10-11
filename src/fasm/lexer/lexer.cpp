@@ -42,7 +42,7 @@ void Lexer::reset() {
 
 bool Lexer::skipLine() {
     ++uiCurrentSourceLine;
-    if (uiCurrentSourceLine > SourceCode::getInstance()->getSize())
+    if (uiCurrentSourceLine >= SourceCode::getInstance()->getSize())
         return false;
     uiIndex0 = uiIndex1 = 0;
     currentLexState = LEX_STATE_NO_STRING;   // 字符串不可跨越多行
@@ -109,7 +109,7 @@ Token Lexer::getNextToken() {
     for (unsigned int i = uiIndex0; i < uiIndex1; i++) {
         if (currentLexState == LEX_STATE_IN_STRING && line[i] == '\\')
             i++;
-        ss >> line[i];
+        ss << line[i];
     }
     currentLexeme = ss.str();
 
