@@ -3,7 +3,7 @@ set(SRC_LIST main.cpp)
 include_directories(
         ${PROJECT_SOURCE_DIR}/include/fasm/utils
         ${PROJECT_SOURCE_DIR}/include/fasm/framework
-        ${PROJECT_SOURCE_DIR}/include/fasm/lexer
+        ${PROJECT_SOURCE_DIR}/include/fasm/component
 )
 
 link_directories(
@@ -18,6 +18,6 @@ target_link_libraries(
         FASM
         fasm-utils
         fasm-framework
-        fasm-lexer
+        fasm-component
         gflags
 )

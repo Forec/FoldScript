@@ -24,10 +24,13 @@ public:
     Lexer();
     Token getCurrentToken();
     Token getNextToken();
+    char getLookAheadChar();
     LexState getCurrentState();
     std::string getCurrentLexeme();
     void reset();
     bool skipLine();
+    void exitOnCodeError(const std::string &err);
+    void exitOnCharExpectError(char code);
 };
 
 #endif //FOLDSCRIPT_LEXER_H

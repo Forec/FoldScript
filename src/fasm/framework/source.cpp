@@ -2,13 +2,16 @@
 // Created by 王耀 on 2017/10/10.
 //
 
+#include <algorithm>
+#include <iostream>
 #include "macro.h"
 #include "utils.h"
 #include "source.h"
-#include <iostream>
 
 SourceCode * SourceCode::instance = nullptr;
 bool SourceCode::initialized = false;
+bool SourceCode::isInitFromFile = false;
+std::string SourceCode::filename = "";
 
 SourceCode * SourceCode::getInstance() {
     if (!instance)
@@ -28,7 +31,9 @@ SourceCode::SourceCode() {
 bool SourceCode::initFromFile(const std::string &path) {
     getInstance()->source.clear();
     // TODO: 读入代码
+    filename = path;
     initialized = true;
+    isInitFromFile = true;
     return true;
 }
 
@@ -48,6 +53,13 @@ void SourceCode::initFromString(const std::string &str) {
     if (index > last)
         getInstance()->source.emplace_back(str.substr(last, index - last));
     initialized = true;
+    isInitFromFile = false;
+}
+
+std::string SourceCode::getFilename() {
+    if (isInitFromFile)
+        return filename;
+    return "字符串导入代码";
 }
 
 unsigned long SourceCode::getSize() {
@@ -70,6 +82,12 @@ std::string SourceCode::readLine(unsigned long index) {
     if (index >= source.size())
         return "";
     return source[index];
+}
+
+std::string SourceCode::readCompressedLine(unsigned long index) {
+    std::string line = readLine(index);
+    std::transform(line.begin(), line.end(), line.begin(), [](char c) { return c == '\t' ? ' ' : c; });
+    return line;
 }
 
 void SourceCode::stripComments() {

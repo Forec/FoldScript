@@ -33,7 +33,7 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/symbol
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/label
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/instruction
-        ${PROJECT_SOURCE_DIR}/include/fasm/lexer
+        ${PROJECT_SOURCE_DIR}/include/fasm/component
 )
 
 link_directories(
@@ -47,7 +47,7 @@ target_link_libraries(
         runUnitTests
         fasm-utils
         fasm-framework
-        fasm-lexer
+        fasm-component
 )
 
 target_link_libraries(runUnitTests gtest gtest_main)

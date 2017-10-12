@@ -191,3 +191,36 @@ Token Lexer::getNextToken() {
 
     return currentToken;
 }
+
+char Lexer::getLookAheadChar() {
+    unsigned int line = uiCurrentSourceLine, index = uiIndex1;
+    if (currentLexState != LEX_STATE_IN_STRING) {
+        while (true) {
+            if (index >= SourceCode::getInstance()->readLine(line).length()) {
+                if (++line >= SourceCode::getInstance()->getSize())
+                    return 0;
+                index = 0;
+            }
+            if (!isCharWhitespace(SourceCode::getInstance()->readLine(line).at(index)))
+                break;
+            ++index;
+        }
+    }
+    if (SourceCode::getInstance()->readLine(line).length() > index)
+        return SourceCode::getInstance()->readLine(line).at(index);
+    return '\0';
+}
+
+void Lexer::exitOnCodeError(const std::string &err) {
+    std::string LineInfo = "第 " + std::to_string(uiCurrentSourceLine) + " 行: ";
+    std::cerr << "错误: " << err << std::endl << LineInfo;
+    std::cerr << SourceCode::getInstance()->readCompressedLine(uiCurrentSourceLine) << std::endl;
+    std::string space;
+    space.resize(uiIndex0 + LineInfo.length(), ' ');
+    std::cerr << space << "^" << std::endl;
+    std::cerr << "无法汇编文件 \"" << SourceCode::getFilename() <<  "\"." << std::endl;
+}
+
+void Lexer::exitOnCharExpectError(char code) {
+    exitOnCodeError("缺少" + std::to_string(code));
+}

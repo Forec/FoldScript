@@ -4,7 +4,9 @@
 
 #include <cctype>
 #include <algorithm>
+#include <iostream>
 #include "utils.h"
+#include "source.h"
 
 bool isStringInt(const std::string &string) {
     if (string.empty())
@@ -33,4 +35,14 @@ bool isStringIdent(const std::string &string) {
     if (string.empty() || isCharNumeric(string[0]))
         return false;
     return std::all_of(string.begin(), string.end(), isCharIdent);
+}
+
+void shutdown() {
+    SourceCode::destroy();
+}
+
+void exitOnError(const std::string &err) {
+    std::cerr << "Fatal Error: " << err << std::endl;
+    shutdown();
+    exit(1);
 }

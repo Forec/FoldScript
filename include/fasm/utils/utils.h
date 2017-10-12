@@ -49,4 +49,10 @@ bool isStringFloat(const std::string &string);
 bool isStringSpace(const std::string &string);
 bool isStringIdent(const std::string &string);
 
+/*
+ * 错误处理函数
+ */
+void shutdown();
+void exitOnError(const std::string & err);
+
 #endif //FOLDSCRIPT_UTILS_H
