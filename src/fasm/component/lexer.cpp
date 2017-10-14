@@ -8,16 +8,39 @@
 #include "macro.h"
 #include "utils.h"
 #include "lexer.h"
-#include "source.h"
 
 Lexer::Lexer() {
+    lookupTable = nullptr;
+    source = nullptr;
     reset();
-    if (!SourceCode::isInitialized()) {
-        std::cerr << "源码未载入" << std::endl;
-        exit(1);
+}
+
+Lexer::~Lexer() {
+    delete lookupTable;
+    delete source;
+}
+
+bool Lexer::initFromFile(const std::string &path) {
+    reset();
+    if (!source->initFromFile(path))
+        return false;
+    if (!source->isInitialized()) {
+        std::cerr << "源码 " << path << " 未载入" << std::endl;
+        return false;
     }
-    lookupTable = new InstrLookupTable();
-    lookupTable->init();
+    source->stripComments();
+    source->trimWhitespace();
+    return true;
+}
+
+void Lexer::initFromString(const std::string &str) {
+    reset();
+    source->initFromString(str);
+    if (!source->isInitialized()) {
+        std::cerr << "源码未载入" << std::endl;
+    }
+    source->stripComments();
+    source->trimWhitespace();
 }
 
 std::string Lexer::getCurrentLexeme() {
@@ -32,17 +55,27 @@ Token Lexer::getCurrentToken() {
     return currentToken;
 }
 
+SourceCode* Lexer::getSource() {
+    return source;
+}
+
 void Lexer::reset() {
     uiCurrentSourceLine = 0;
     uiIndex0 = uiIndex1 = 0;
     currentToken = TOKEN_TYPE_INVALID;
     currentLexState = LEX_STATE_NO_STRING;
     currentLexeme = "";
+    if (!source)
+        source = new SourceCode();
+    if (!lookupTable) {
+        lookupTable = new InstrLookupTable();
+        lookupTable->init();
+    }
 }
 
 bool Lexer::skipLine() {
     ++uiCurrentSourceLine;
-    if (uiCurrentSourceLine >= SourceCode::getInstance()->getSize())
+    if (uiCurrentSourceLine >= source->getSize())
         return false;
     uiIndex0 = uiIndex1 = 0;
     currentLexState = LEX_STATE_NO_STRING;   // 字符串不可跨越多行
@@ -56,14 +89,14 @@ bool Lexer::skipLine() {
 Token Lexer::getNextToken() {
     uiIndex0 = uiIndex1;    // 将索引移至上一个属性字末尾
 
-    if (uiIndex0 >= SourceCode::getInstance()->readLine(uiCurrentSourceLine).length() &&
+    if (uiIndex0 >= source->readLine(uiCurrentSourceLine).length() &&
         !skipLine())
         return END_OF_TOKEN_STREAM;   // 本行已扫描完，跳至下一行
 
     if (currentLexState == LEX_STATE_END_STRING)
         currentLexState = LEX_STATE_NO_STRING;   // 若上一个属性字为字符串，则结束对其分析
 
-    std::string line = SourceCode::getInstance()->readLine(uiCurrentSourceLine);
+    std::string line = source->readLine(uiCurrentSourceLine);
 
     // 如果当前没有检测到字符串，则跳过下一个属性字前的空白符
     if (currentLexState != LEX_STATE_IN_STRING) {
@@ -196,29 +229,29 @@ char Lexer::getLookAheadChar() {
     unsigned int line = uiCurrentSourceLine, index = uiIndex1;
     if (currentLexState != LEX_STATE_IN_STRING) {
         while (true) {
-            if (index >= SourceCode::getInstance()->readLine(line).length()) {
-                if (++line >= SourceCode::getInstance()->getSize())
+            if (index >= source->readLine(line).length()) {
+                if (++line >= source->getSize())
                     return 0;
                 index = 0;
             }
-            if (!isCharWhitespace(SourceCode::getInstance()->readLine(line).at(index)))
+            if (!isCharWhitespace(source->readLine(line).at(index)))
                 break;
             ++index;
         }
     }
-    if (SourceCode::getInstance()->readLine(line).length() > index)
-        return SourceCode::getInstance()->readLine(line).at(index);
+    if (source->readLine(line).length() > index)
+        return source->readLine(line).at(index);
     return '\0';
 }
 
 void Lexer::exitOnCodeError(const std::string &err) {
     std::string LineInfo = "第 " + std::to_string(uiCurrentSourceLine) + " 行: ";
     std::cerr << "错误: " << err << std::endl << LineInfo;
-    std::cerr << SourceCode::getInstance()->readCompressedLine(uiCurrentSourceLine) << std::endl;
+    std::cerr << source->readCompressedLine(uiCurrentSourceLine) << std::endl;
     std::string space;
     space.resize(uiIndex0 + LineInfo.length(), ' ');
     std::cerr << space << "^" << std::endl;
-    std::cerr << "无法汇编文件 \"" << SourceCode::getFilename() <<  "\"." << std::endl;
+    std::cerr << "无法汇编文件 \"" << source->getFilename() <<  "\"." << std::endl;
 }
 
 void Lexer::exitOnCharExpectError(char code) {

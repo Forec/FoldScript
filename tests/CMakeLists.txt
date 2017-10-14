@@ -23,7 +23,7 @@ set(
         fasm/test_framework/test_label.cpp
         fasm/test_framework/test_instrlookup.cpp
         fasm/test_framework/test_source.cpp
-        fasm/test_lexer/test_lexer.cpp
+        fasm/test_component/test_lexer.cpp
 )
 
 include_directories(

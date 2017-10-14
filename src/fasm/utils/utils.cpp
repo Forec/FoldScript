@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <iostream>
 #include "utils.h"
-#include "source.h"
 
 bool isStringInt(const std::string &string) {
     if (string.empty())
@@ -38,7 +37,6 @@ bool isStringIdent(const std::string &string) {
 }
 
 void shutdown() {
-    SourceCode::destroy();
 }
 
 void exitOnError(const std::string &err) {

@@ -8,28 +8,18 @@
 #include "utils.h"
 #include "source.h"
 
-SourceCode * SourceCode::instance = nullptr;
-bool SourceCode::initialized = false;
-bool SourceCode::isInitFromFile = false;
-std::string SourceCode::filename = "";
-
-SourceCode * SourceCode::getInstance() {
-    if (!instance)
-        instance = new SourceCode();
-    return instance;
-}
-
-void SourceCode::destroy() {
-    delete instance;
-    initialized = false;
-}
-
 SourceCode::SourceCode() {
+    initialized = false;
+    isInitFromFile = false;
+    source.clear();
+}
+
+SourceCode::~SourceCode() {
     source.clear();
 }
 
 bool SourceCode::initFromFile(const std::string &path) {
-    getInstance()->source.clear();
+    source.clear();
     // TODO: 读入代码
     filename = path;
     initialized = true;
@@ -38,20 +28,21 @@ bool SourceCode::initFromFile(const std::string &path) {
 }
 
 void SourceCode::initFromString(const std::string &str) {
-    getInstance()->source.clear();
+    source.clear();
     if (str.empty()) {
         initialized = true;
+        isInitFromFile = false;
         return;
     }
     size_t last = 0;
     size_t index = str.find_first_of(CODE_LINE_DELIMITER, last);
     while (index != std::string::npos) {
-        getInstance()->source.emplace_back(str.substr(last, index - last));
+        source.emplace_back(str.substr(last, index - last));
         last = index + 1;
         index = str.find_first_of(CODE_LINE_DELIMITER, last);
     }
     if (index > last)
-        getInstance()->source.emplace_back(str.substr(last, index - last));
+        source.emplace_back(str.substr(last, index - last));
     initialized = true;
     isInitFromFile = false;
 }

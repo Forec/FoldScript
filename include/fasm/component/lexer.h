@@ -6,7 +6,8 @@
 #define FOLDSCRIPT_LEXER_H
 
 #include <string>
-#include "../framework/instruction/inslktable.h"
+#include "inslktable.h"
+#include "source.h"
 
 typedef unsigned char Token;
 typedef unsigned char LexState;
@@ -20,8 +21,12 @@ private:
     Token currentToken;
     LexState currentLexState;
     InstrLookupTable * lookupTable;
+    SourceCode * source;
 public:
     Lexer();
+    ~Lexer();
+    bool initFromFile(const std::string &path);
+    void initFromString(const std::string &str);
     Token getCurrentToken();
     Token getNextToken();
     char getLookAheadChar();
@@ -31,6 +36,7 @@ public:
     bool skipLine();
     void exitOnCodeError(const std::string &err);
     void exitOnCharExpectError(char code);
+    SourceCode * getSource();
 };
 
 #endif //FOLDSCRIPT_LEXER_H

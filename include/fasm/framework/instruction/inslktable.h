@@ -19,6 +19,7 @@ private:
     std::unordered_map<std::string, InstrLookup> iTable;
 public:
     InstrLookupTable();
+    ~InstrLookupTable();
     void init();
     bool addInstrLookup(const std::string &mnemonic, unsigned int opCode, unsigned int opCount);
     InstrLookup getInstrLookup(const std::string &mnemonic);

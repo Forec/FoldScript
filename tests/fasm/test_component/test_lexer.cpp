@@ -8,23 +8,17 @@
 #include "lexer.h"
 
 TEST(LexerTest, LexerTest_RESET_Test) {
-    SourceCode::initFromString("   var X;声明X \n");
-    SourceCode::getInstance()->stripComments();
-    SourceCode::getInstance()->trimWhitespace();
-
     Lexer lexer;
+    lexer.initFromString("   var X;声明X \n");
     EXPECT_EQ(TOKEN_TYPE_INVALID, lexer.getCurrentToken());
     EXPECT_EQ(LEX_STATE_NO_STRING, lexer.getCurrentState());
     EXPECT_TRUE(lexer.getCurrentLexeme().empty());
 }
 
 TEST(LexerTest, LexerTest_SKIPLINE_Test) {
-    SourceCode::initFromString("var X; 声明X \n var Y\t\nmov X, Y");
-    SourceCode::getInstance()->stripComments();
-    SourceCode::getInstance()->trimWhitespace();
-
     Lexer lexer;
-    EXPECT_EQ(3, SourceCode::getInstance()->getSize());
+    lexer.initFromString("var X; 声明X \n var Y\t\nmov X, Y");
+    EXPECT_EQ(3, lexer.getSource()->getSize());
     EXPECT_TRUE(lexer.skipLine());  // currentSourceLine = 1
     EXPECT_EQ(LEX_STATE_NO_STRING, lexer.getCurrentState());
     EXPECT_TRUE(lexer.skipLine());  // currentSourceLine = 2
@@ -32,12 +26,9 @@ TEST(LexerTest, LexerTest_SKIPLINE_Test) {
 }
 
 TEST(LexerTest, LexerTest_GET_NEXT_TOKEN_Test) {
-    SourceCode::initFromString("Mov StringVal, \"This is a string\"\nVar YW; declare Y\nShl X, YW");
-    SourceCode::getInstance()->stripComments();
-    SourceCode::getInstance()->trimWhitespace();
-    EXPECT_EQ(3, SourceCode::getInstance()->getSize());
-
     Lexer lexer;
+    lexer.initFromString("Mov StringVal, \"This is a string\"\nVar YW; declare Y\nShl X, YW");
+    EXPECT_EQ(3, lexer.getSource()->getSize());
     EXPECT_EQ(TOKEN_TYPE_INSTR, lexer.getNextToken());
     EXPECT_EQ(LEX_STATE_NO_STRING, lexer.getCurrentState());
     EXPECT_EQ("MOV", lexer.getCurrentLexeme());

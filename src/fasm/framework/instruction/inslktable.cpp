@@ -9,6 +9,10 @@ InstrLookupTable::InstrLookupTable() {
     iTable.clear();
 }
 
+InstrLookupTable::~InstrLookupTable() {
+    iTable.clear();
+}
+
 bool InstrLookupTable::addInstrLookup(const std::string &mnemonic, unsigned int opCode, unsigned int opCount) {
     if (iTable.find(mnemonic) != iTable.end())
         return false;
