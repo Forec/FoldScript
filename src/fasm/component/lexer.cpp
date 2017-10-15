@@ -10,8 +10,8 @@
 #include "lexer.h"
 
 Lexer::Lexer() {
-    lookupTable = nullptr;
-    source = nullptr;
+    source = new SourceCode();
+    lookupTable = new InstrLookupTable();
     reset();
 }
 
@@ -59,18 +59,21 @@ SourceCode* Lexer::getSource() {
     return source;
 }
 
+unsigned int Lexer::getFirstIndex() {
+    return uiIndex0;
+}
+
+unsigned int Lexer::getCurrentSourceLine() {
+    return uiCurrentSourceLine;
+}
+
 void Lexer::reset() {
     uiCurrentSourceLine = 0;
     uiIndex0 = uiIndex1 = 0;
     currentToken = TOKEN_TYPE_INVALID;
     currentLexState = LEX_STATE_NO_STRING;
     currentLexeme = "";
-    if (!source)
-        source = new SourceCode();
-    if (!lookupTable) {
-        lookupTable = new InstrLookupTable();
-        lookupTable->init();
-    }
+    lookupTable->init();
 }
 
 bool Lexer::skipLine() {
@@ -242,18 +245,4 @@ char Lexer::getLookAheadChar() {
     if (source->readLine(line).length() > index)
         return source->readLine(line).at(index);
     return '\0';
-}
-
-void Lexer::exitOnCodeError(const std::string &err) {
-    std::string LineInfo = "第 " + std::to_string(uiCurrentSourceLine) + " 行: ";
-    std::cerr << "错误: " << err << std::endl << LineInfo;
-    std::cerr << source->readCompressedLine(uiCurrentSourceLine) << std::endl;
-    std::string space;
-    space.resize(uiIndex0 + LineInfo.length(), ' ');
-    std::cerr << space << "^" << std::endl;
-    std::cerr << "无法汇编文件 \"" << source->getFilename() <<  "\"." << std::endl;
-}
-
-void Lexer::exitOnCharExpectError(char code) {
-    exitOnCodeError("缺少" + std::to_string(code));
 }

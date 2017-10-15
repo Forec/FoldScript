@@ -48,7 +48,7 @@
 #define GRAMMAR_FUNC                  "FUNC"          // 定义函数
 #define GRAMMAR_PARAM                 "PARAM"         // 声明参数
 #define GRAMMAR_RESULT_REGISTER       "_RETVAL"       // 返回值寄存器
-
+#define GRAMMAR_MAIN_FUNC_NAME        "_MAIN"         // 主函数名
 
 /*
  * 助记符宏定义
@@ -173,5 +173,32 @@
 #define LEX_STATE_NO_STRING           0x00     // 默认
 #define LEX_STATE_IN_STRING           0x01     // 字符串中
 #define LEX_STATE_END_STRING          0x02     // 字符串结束
+
+/*
+ * 语法分析错误提示
+ */
+#define ERROR_MSSG_INVALID_INPUT              "输入不合法"
+#define ERROR_MSSG_LOCAL_SETSTACKSIZE         "SetStackSize 仅能在全局空间中设置"
+#define ERROR_MSSG_INVALID_STACK_SIZE         "堆栈大小格式不合法"
+#define ERROR_MSSG_MULTIPLE_SETSTACKSIZES     "存在多个 SetStackSize 实例"
+#define ERROR_MSSG_IDENT_EXPECTED             "需要指定标识符"
+#define ERROR_MSSG_INVALID_ARRAY_SIZE         "违法的数组大小"
+#define ERROR_MSSG_IDENT_REDEFINITION         "标识符被重复定义"
+#define ERROR_MSSG_UNDEFINED_IDENT            "未定义的标识符"
+#define ERROR_MSSG_NESTED_FUNC                "语法暂不支持函数嵌套"
+#define ERROR_MSSG_FUNC_REDEFINITION          "函数被重复定义"
+#define ERROR_MSSG_UNDEFINED_FUNC             "未定义的函数"
+#define ERROR_MSSG_GLOBAL_PARAM               "参数仅能在函数空间中声明"
+#define ERROR_MSSG_MAIN_PARAM                 "_Main () 函数不接受参数"
+#define ERROR_MSSG_GLOBAL_LINE_LABEL          "行标签仅能在函数空间中声明"
+#define ERROR_MSSG_LINE_LABEL_REDEFINITION    "行标签被重复定义"
+#define ERROR_MSSG_UNDEFINED_LINE_LABEL       "未定义的行标签"
+#define ERROR_MSSG_GLOBAL_INSTR               "指令仅能在函数中使用"
+#define ERROR_MSSG_INVALID_INSTR              "非法指令"
+#define ERROR_MSSG_INVALID_OP                 "非法操作符"
+#define ERROR_MSSG_INVALID_STRING             "非法字符串"
+#define ERROR_MSSG_INVALID_ARRAY_NOT_INDEXED  "数组无法被索引"
+#define ERROR_MSSG_INVALID_ARRAY              "非法数组"
+#define ERROR_MSSG_INVALID_ARRAY_INDEX        "非法数组下标"
 
 #endif //FOLDSCRIPT_MACRO_H

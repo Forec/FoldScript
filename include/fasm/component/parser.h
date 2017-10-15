@@ -6,20 +6,23 @@
 #define FOLDSCRIPT_PARSER_H
 
 #include <string>
-#include "function/funcnode.h"
+#include "function/functable.h"
 #include "lexer.h"
 
 class Parser {
 private:
     unsigned long uiStackSize;
     unsigned long uiGlobalDataSize;
-    unsigned long uiInstrStreamSize;
+    int iInstrStreamSize;
+    int iMainFuncIndex;
+    unsigned int uiCurrentFuncParamCount;
+    unsigned int uiCurrentFuncLocalDataSize;
     bool isMainFunctionPresent;
     bool isSetStackSizeFound;
 
     bool isFuncActive;
     std::string currentFuncName;
-    FuncNode currentFunc;
+    FuncTable * functions;
 
     Lexer * lexer;
 public:
@@ -29,6 +32,10 @@ public:
     void initFromString(const std::string &str);
     void reset();
     void assemble();
+
+    // 错误处理
+    void codeError(const std::string &err);
+    void charExpectError(char code);
 };
 
 #endif //FOLDSCRIPT_PARSER_H

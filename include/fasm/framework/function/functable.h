@@ -23,6 +23,8 @@ private:
     std::unordered_map<std::string, FuncNode> iTable;
 public:
     FuncTable();
+    ~FuncTable();
+    void reset();
     int addFunction(const std::string & name, int entryPoint);
     void setFunction(const std::string & name, unsigned int paramCount, unsigned int localDataSize);
     FuncNode getFunction(const std::string & name);

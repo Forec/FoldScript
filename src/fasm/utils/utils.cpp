@@ -8,6 +8,7 @@
 #include "utils.h"
 
 bool isStringInt(const std::string &string) {
+    // TODO: 对十六进制、八进制、二进制的支持。返回值可以为识别出的进制。
     if (string.empty())
         return false;
     if (!isCharNumeric(string[0]) && string[0] != '-')
@@ -40,7 +41,7 @@ void shutdown() {
 }
 
 void exitOnError(const std::string &err) {
-    std::cerr << "Fatal Error: " << err << std::endl;
+    std::cerr << "致命错误: " << err << "." << std::endl;
     shutdown();
     exit(1);
 }

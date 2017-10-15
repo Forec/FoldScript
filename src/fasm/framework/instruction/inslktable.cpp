@@ -42,6 +42,8 @@ OpTypes InstrLookupTable::getInstrOpType(const std::string &mnemonic, unsigned i
 }
 
 void InstrLookupTable::init() {
+    iTable.clear();
+
     // 空转指令
     addInstrLookup(INSTR_NOP_STR, INSTR_NOP, 0);
 

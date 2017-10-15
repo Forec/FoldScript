@@ -32,10 +32,10 @@ public:
     char getLookAheadChar();
     LexState getCurrentState();
     std::string getCurrentLexeme();
+    unsigned int getCurrentSourceLine();
+    unsigned int getFirstIndex();
     void reset();
     bool skipLine();
-    void exitOnCodeError(const std::string &err);
-    void exitOnCharExpectError(char code);
     SourceCode * getSource();
 };
 
