@@ -7,6 +7,8 @@
 
 #include <string>
 #include "function/functable.h"
+#include "symbol/symtable.h"
+#include "label/labtable.h"
 #include "lexer.h"
 
 class Parser {
@@ -17,12 +19,16 @@ private:
     int iMainFuncIndex;
     unsigned int uiCurrentFuncParamCount;
     unsigned int uiCurrentFuncLocalDataSize;
+    int iCurrentFuncIndex;
+
     bool isMainFunctionPresent;
     bool isSetStackSizeFound;
 
     bool isFuncActive;
     std::string currentFuncName;
     FuncTable * functions;
+    SymbolTable * symbols;
+    LabelTable * labels;
 
     Lexer * lexer;
 public:

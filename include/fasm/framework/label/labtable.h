@@ -23,6 +23,7 @@ private:
     std::unordered_map<kpair, LabelNode, hash_func, cmp_func> iTable;
 public:
     LabelTable();
+    void reset();
     int addLabel(const std::string &name, unsigned int targetIndex, unsigned int funcIndex);
     LabelNode getLabel(const std::string &name, unsigned int funcIndex);
 };

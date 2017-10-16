@@ -26,6 +26,7 @@ private:
 public:
     SymbolTable();
     int addSymbol(const std::string &ident, unsigned int size, int stackIndex, unsigned int funcIndex);
+    void reset();
     SymbolNode getSymbol(const std::string &ident, unsigned int funcIndex = 0);
     int getStackIndex(const std::string &ident, unsigned int funcIndex = 0);
     int getSize(const std::string &ident, unsigned int funcIndex = 0);

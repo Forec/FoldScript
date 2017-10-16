@@ -8,6 +8,10 @@ LabelTable::LabelTable() {
     iTable.clear();
 }
 
+void LabelTable::reset() {
+    iTable.clear();
+}
+
 int LabelTable::addLabel(const std::string &name, unsigned int targetIndex, unsigned int funcIndex) {
     if (getLabel(name, funcIndex).getIndex() != -1)
         return -1;

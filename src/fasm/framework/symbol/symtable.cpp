@@ -9,6 +9,11 @@ SymbolTable::SymbolTable() {
     iGlobal.clear();
 }
 
+void SymbolTable::reset() {
+    iTable.clear();
+    iGlobal.clear();
+}
+
 int SymbolTable::addSymbol(const std::string &ident, unsigned int size, int stackIndex, unsigned int funcIndex) {
     if (getSymbol(ident, funcIndex).getIndex() != -1)     // 已存在同名符号且位于同一函数内（或与全局符号冲突）
         return -1;
