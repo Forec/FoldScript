@@ -24,6 +24,7 @@ set(
         fasm/test_framework/test_instrlookup.cpp
         fasm/test_framework/test_source.cpp
         fasm/test_component/test_lexer.cpp
+        fasm/test_framework/test_instr_table.cpp
 )
 
 include_directories(

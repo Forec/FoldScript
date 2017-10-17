@@ -59,6 +59,10 @@ SourceCode* Lexer::getSource() {
     return source;
 }
 
+InstrLookupTable* Lexer::getLookupTable() {
+    return lookupTable;
+}
+
 unsigned int Lexer::getFirstIndex() {
     return uiIndex0;
 }
@@ -83,6 +87,10 @@ bool Lexer::skipLine() {
     uiIndex0 = uiIndex1 = 0;
     currentLexState = LEX_STATE_NO_STRING;   // 字符串不可跨越多行
     return true;
+}
+
+InstrLookup Lexer::getCurrentInstr() {
+    return lookupTable->getInstrLookup(currentLexeme);
 }
 
 /*

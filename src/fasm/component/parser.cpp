@@ -6,6 +6,7 @@
 #include <iostream>
 #include "macro.h"
 #include "utils.h"
+#include "instrlookup.h"
 #include "parser.h"
 
 Parser::Parser() {
@@ -160,6 +161,10 @@ void Parser::assemble() {
                 if (!labels->addLabel(lexer->getCurrentLexeme(), iTargetIndex, (unsigned int)iCurrentFuncIndex))
                     codeError(ERROR_MSSG_LINE_LABEL_REDEFINITION);
                 break;
+            }
+            case TOKEN_TYPE_INSTR: {
+                InstrLookup instr = lexer->getCurrentInstr();
+                
             }
         }
     }

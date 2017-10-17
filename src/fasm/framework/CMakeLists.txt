@@ -11,7 +11,7 @@ set(
         instruction/instr.cpp
         instruction/inslktable.cpp
         instruction/instrlookup.cpp
-)
+        instruction/instable.cpp)
 
 
 include_directories(

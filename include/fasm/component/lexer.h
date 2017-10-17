@@ -37,6 +37,8 @@ public:
     void reset();
     bool skipLine();
     SourceCode * getSource();
+    InstrLookupTable * getLookupTable();
+    InstrLookup getCurrentInstr();
 };
 
 #endif //FOLDSCRIPT_LEXER_H
