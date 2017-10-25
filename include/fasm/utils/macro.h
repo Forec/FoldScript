@@ -40,6 +40,16 @@
 #define OP_FLAG_TYPE_STRCLASS         (OP_FLAG_TYPE_MEM_REF | OP_FLAG_TYPE_REG   | OP_FLAG_TYPE_STRING)
 #define OP_FLAG_TYPE_TARGET           (OP_FLAG_TYPE_MEM_REF | OP_FLAG_TYPE_REG)
 
+#define OP_TYPE_INT                   0x00     // 整型
+#define OP_TYPE_FLOAT                 0x01     // 浮点型
+#define OP_TYPE_STRING_INDEX          0x02     // 字符串
+#define OP_TYPE_ABS_STACK_INDEX       0x03     // 绝对堆栈索引
+#define OP_TYPE_REL_STACK_INDEX       0x04     // 相对堆栈索引
+#define OP_TYPE_INSTR_INDEX           0x05     // 指令索引
+#define OP_TYPE_FUNC_INDEX            0x06     // 函数索引
+#define OP_TYPE_HOST_API_CALL_INDEX   0x07     // 系统调用索引
+#define OP_TYPE_REG                   0x08     // 寄存器
+
 /*
  * 元指令（保留字）
  */

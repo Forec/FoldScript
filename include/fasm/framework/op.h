@@ -15,8 +15,8 @@
 struct Op {
     unsigned char iType;
     union {
-        int iIntLiteral;               // 整型
-        float fFloatLiteral;           // 浮点型
+        int iIntLiteral;                        // 整型
+        float fFloatLiteral;                    // 浮点型
         unsigned int iStringTableIndex;         // 字符串表索引
         unsigned int iStackIndex;               // 堆栈索引
         unsigned int iInstrIndex;               // 指令索引

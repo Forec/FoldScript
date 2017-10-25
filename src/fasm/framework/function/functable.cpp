@@ -35,6 +35,6 @@ void FuncTable::setFunction(const std::string &name, unsigned int paramCount, un
 FuncNode FuncTable::getFunction(const std::string &name) {
     auto pair = iTable.find(name);
     if (pair == iTable.end())
-        return FuncNode(0);
+        return FuncNode{0};
     return pair->second;
 }

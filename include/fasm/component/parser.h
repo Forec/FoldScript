@@ -9,6 +9,7 @@
 #include "function/functable.h"
 #include "symbol/symtable.h"
 #include "label/labtable.h"
+#include "instruction/instable.h"
 #include "lexer.h"
 
 class Parser {
@@ -17,6 +18,7 @@ private:
     unsigned long uiGlobalDataSize;
     int iInstrStreamSize;
     int iMainFuncIndex;
+    unsigned int uiCurrentInstrIndex;
     unsigned int uiCurrentFuncParamCount;
     unsigned int uiCurrentFuncLocalDataSize;
     int iCurrentFuncIndex;
@@ -26,9 +28,11 @@ private:
 
     bool isFuncActive;
     std::string currentFuncName;
+    FuncNode currentFunction;
     FuncTable * functions;
     SymbolTable * symbols;
     LabelTable * labels;
+    InstrTable * instructions;
 
     Lexer * lexer;
 public:

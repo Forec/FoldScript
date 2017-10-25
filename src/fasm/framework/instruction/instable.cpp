@@ -16,6 +16,20 @@ void InstrTable::reset() {
     instrStream.clear();
 }
 
+void InstrTable::resize(unsigned long size) {
+    instrStream.resize(size, Instr(0, 0));
+}
+
+void InstrTable::setOpCode(unsigned long index, unsigned int opCode) {
+    if (index < instrStream.size())
+        instrStream[index].uiOpCode = opCode;
+}
+
+void InstrTable::setOpCount(unsigned long index, unsigned int opCount) {
+    if (index < instrStream.size())
+        instrStream[index].uiOpCount = opCount;
+}
+
 unsigned long InstrTable::getSize() {
     return instrStream.size();
 }
