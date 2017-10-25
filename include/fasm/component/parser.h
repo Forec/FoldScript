@@ -10,6 +10,7 @@
 #include "symbol/symtable.h"
 #include "label/labtable.h"
 #include "instruction/instable.h"
+#include "strtable.h"
 #include "lexer.h"
 
 class Parser {
@@ -17,11 +18,11 @@ private:
     unsigned long uiStackSize;
     unsigned long uiGlobalDataSize;
     int iInstrStreamSize;
-    int iMainFuncIndex;
     unsigned int uiCurrentInstrIndex;
     unsigned int uiCurrentFuncParamCount;
     unsigned int uiCurrentFuncLocalDataSize;
-    int iCurrentFuncIndex;
+    unsigned int uiCurrentFuncIndex;
+    unsigned int uiMainFuncIndex;
 
     bool isMainFunctionPresent;
     bool isSetStackSizeFound;
@@ -33,6 +34,7 @@ private:
     SymbolTable * symbols;
     LabelTable * labels;
     InstrTable * instructions;
+    StringTable * strings;
 
     Lexer * lexer;
 public:

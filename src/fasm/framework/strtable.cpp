@@ -5,9 +5,20 @@
 #include "strtable.h"
 
 StringTable::StringTable() {
+    reset();
+}
+
+StringTable::~StringTable() {
     iMap.clear();
     iTable.clear();
 }
+
+void StringTable::reset() {
+    iMap.clear();
+    iTable.clear();
+    insert("");
+}
+
 
 unsigned int StringTable::insert(const std::string &string) {
     auto pair = iMap.find(string);

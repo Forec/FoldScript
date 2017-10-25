@@ -17,7 +17,7 @@ void FuncTable::reset() {
 }
 
 int FuncTable::addFunction(const std::string &name, int entryPoint) {
-    if (iTable.find(name) != iTable.end())    // 已存在同名函数，返回无效索引
+    if (iTable.find(name) != iTable.end())                              // 已存在同名函数，返回无效索引
         return -1;
     FuncNode func((int)iTable.size(), entryPoint);
     iTable.insert(std::make_pair(name, func));
@@ -35,6 +35,6 @@ void FuncTable::setFunction(const std::string &name, unsigned int paramCount, un
 FuncNode FuncTable::getFunction(const std::string &name) {
     auto pair = iTable.find(name);
     if (pair == iTable.end())
-        return FuncNode{0};
+        return FuncNode{-1, -1, 0, 0};
     return pair->second;
 }
