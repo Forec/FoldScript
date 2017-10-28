@@ -242,7 +242,7 @@ char Lexer::getLookAheadChar() {
         while (true) {
             if (index >= source->readLine(line).length()) {
                 if (++line >= source->getSize())
-                    return 0;
+                    return '\0';
                 index = 0;
             }
             if (!isCharWhitespace(source->readLine(line).at(index)))

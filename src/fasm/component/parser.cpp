@@ -200,25 +200,25 @@ void Parser::assemble() {
                 lexer->getNextToken();
                 currentFuncName = lexer->getCurrentLexeme();
                 currentFunction = functions->getFunction(currentFuncName);
-                uiCurrentFuncIndex = (unsigned int) currentFunction.getIndex(); // 保存当前函数索引
+                uiCurrentFuncIndex = (unsigned int) currentFunction.getIndex();             // 保存当前函数索引
                 isFuncActive = true;
-                uiCurrentFuncParamCount = 0;                            // 重置当前函数参数数量
+                uiCurrentFuncParamCount = 0;                                                // 重置当前函数参数数量
                 while (lexer->getNextToken() == TOKEN_TYPE_NEWLINE);
                 break;
             }
-            case TOKEN_TYPE_CLOSE_BRACE: {                              // 遇到右花括号时表示函数结束，增加额外的 RET 或 EXIT 指令
+            case TOKEN_TYPE_CLOSE_BRACE: {                                                  // 遇到右花括号时表示函数结束，增加额外的 RET 或 EXIT 指令
                 Instr endInstr(INSTR_EXIT, 1);
                 isFuncActive = false;
-                if (currentFuncName == GRAMMAR_MAIN_FUNC_NAME) {        // 当前函数为 Main，退出时增加 exit 指令
+                if (currentFuncName == GRAMMAR_MAIN_FUNC_NAME) {                            // 当前函数为 Main，退出时增加 exit 指令
                     endInstr.OpList.emplace_back(Op{OP_TYPE_INT, 0, 0});
                 } else {
                     endInstr.uiOpCode = INSTR_RET;
                     endInstr.uiOpCount = 0;
                 }
-                instructions->setInstr(uiCurrentInstrIndex++, endInstr);// 将 RET 或 EXIT 指令加入函数末尾
+                instructions->setInstr(uiCurrentInstrIndex++, endInstr);                    // 将 RET 或 EXIT 指令加入函数末尾
                 break;
             }
-            case TOKEN_TYPE_PARAM: {                                    // 第二次遍历遇到参数时需要将其加入参数表
+            case TOKEN_TYPE_PARAM: {                                                        // 第二次遍历遇到参数时需要将其加入参数表
                 if (lexer->getNextToken() != TOKEN_TYPE_IDENT)
                     codeError(ERROR_MSSG_IDENT_EXPECTED);
                 int iStackIndex = -(currentFunction.getLocalDataSize() + 2 + uiCurrentFuncParamCount + 1);
@@ -229,11 +229,11 @@ void Parser::assemble() {
             }
             case TOKEN_TYPE_INSTR: {
                 InstrLookup instr = lexer->getLookupTable()->getInstrLookup(lexer->getCurrentLexeme());
-                instructions->setOpCode(uiCurrentFuncIndex, instr.getOpCode());
-                instructions->setOpCount(uiCurrentFuncIndex, instr.getOpCount());
+                instructions->setOpCode(uiCurrentInstrIndex, instr.getOpCode());
+                instructions->setOpCount(uiCurrentInstrIndex, instr.getOpCount());
                 std::vector<Op> opList;
                 for (unsigned int uiOpIndex = 0; uiOpIndex < instr.getOpCount(); ++uiOpIndex) {
-                    OpTypes currentOpTypes = instr.getOpType(uiOpIndex);// 获得该位置参数可选类型的 BIT 表示
+                    OpTypes currentOpTypes = instr.getOpType(uiOpIndex);                    // 获得该位置参数可选类型的 BIT 表示
                     Op currentOp{0, 0, 0};
                     Token initOpToken = lexer->getNextToken();
                     switch (initOpToken) {
@@ -241,7 +241,6 @@ void Parser::assemble() {
                             if (currentOpTypes & OP_FLAG_TYPE_INT) {
                                 currentOp.iType = OP_TYPE_INT;
                                 currentOp.iIntLiteral = (int) strtol(lexer->getCurrentLexeme().c_str(), nullptr, 10);
-                                opList.emplace_back(currentOp);         // 配置该位置参数的属性并加入参数列表
                             } else
                                 codeError(ERROR_MSSG_INVALID_OP);
                             break;
@@ -250,43 +249,135 @@ void Parser::assemble() {
                             if (currentOpTypes & OP_FLAG_TYPE_FLOAT) {
                                 currentOp.iType = OP_TYPE_FLOAT;
                                 currentOp.fFloatLiteral = strtof(lexer->getCurrentLexeme().c_str(), nullptr);
-                                opList.emplace_back(currentOp);         // 配置该位置参数的属性并加入参数列表
                             } else
                                 codeError(ERROR_MSSG_INVALID_OP);
                             break;
                         }
-                        case TOKEN_TYPE_QUOTE: {                        // 遇到双引号则识别字符串
+                        case TOKEN_TYPE_QUOTE: {                                            // 遇到双引号则识别字符串
                             if (currentOpTypes & OP_FLAG_TYPE_STRING) {
                                 lexer->getNextToken();
                                 currentOp.iType = OP_TYPE_STRING_INDEX;
                                 switch (lexer->getCurrentToken()) {
-                                    case TOKEN_TYPE_QUOTE: {            // 左右双引号紧邻则字符串为空
-                                        currentOp.iStringTableIndex = 0;// 空字符串对应字符串表中第一行
+                                    case TOKEN_TYPE_QUOTE: {                                // 左右双引号紧邻则字符串为空
+                                        currentOp.uiStringTableIndex = 0;                   // 空字符串对应字符串表中第一行
                                         break;
                                     }
                                     case TOKEN_TYPE_STRING: {
-                                        currentOp.iStringTableIndex = strings->insert(lexer->getCurrentLexeme());
+                                        currentOp.uiStringTableIndex = strings->insert(lexer->getCurrentLexeme());
                                         if (lexer->getNextToken() != TOKEN_TYPE_QUOTE)
-                                            charExpectError('\\');      // 不允许跨行等无双引号结尾的字符串 TODO: 允许跨行定义字符串
+                                            charExpectError('\\');                          // 不允许跨行等无双引号结尾的字符串 TODO: 允许跨行定义字符串
                                         break;
                                     }
                                     default:
                                         codeError(ERROR_MSSG_INVALID_STRING);
                                         break;
                                 }
-                                opList.emplace_back(currentOp);         // 将参数加入参数列表
                             } else
                                 codeError(ERROR_MSSG_INVALID_OP);
                             break;
                         }
-                            // TODO: case RETVAL && IDENT
+                        case TOKEN_TYPE_REG_RETVAL: {
+                            if (currentOpTypes & OP_FLAG_TYPE_REG) {
+                                currentOp.iType = OP_TYPE_REG;
+                                currentOp.uiReg = 0;
+                            } else
+                                codeError(ERROR_MSSG_INVALID_OP);
+                            break;
+                        }
+                        case TOKEN_TYPE_IDENT: {
+                            // 标识符对应的操作数可能为：[变量、数组]、[行标识符]、[函数]、[系统调用]，且彼此之间不可能并存
+
+                            if (currentOpTypes & OP_FLAG_TYPE_MEM_REF) {                    // 此时该标识符可能为变量或者数组
+                                std::string currentIdent = lexer->getCurrentLexeme();
+                                SymbolNode node = symbols->getSymbol(currentIdent, uiCurrentFuncIndex);
+                                if (node.getIndex() == -1)                                  // 确保该变量或数组已被定义过
+                                    codeError(ERROR_MSSG_UNDEFINED_IDENT);
+                                int iBaseIndex = node.getStackIndex();
+                                if (lexer->getLookAheadChar() != '[') {                     // 该标识符确定为非数组变量
+                                    if (node.getSize() > 1)
+                                        codeError(ERROR_MSSG_INVALID_ARRAY_NOT_INDEXED);
+                                    currentOp.iType = OP_TYPE_ABS_STACK_INDEX;
+                                    currentOp.iStackIndex = iBaseIndex;
+                                } else {
+                                    if (node.getSize() == 1)                                // 数组长度应当大于 1  TODO：允许数组长度声明为 0 或 1
+                                        codeError(ERROR_MSSG_INVALID_ARRAY);
+                                    if (lexer->getNextToken() != TOKEN_TYPE_OPEN_BRACKET)   // 确保数组后跟随索引 TODO：允许使用数组指针（需要支持指针类型）
+                                        charExpectError('[');
+                                    Token indexToken = lexer->getNextToken();
+                                    if (indexToken == TOKEN_TYPE_INT) {
+                                        int iOffsetIndex = strtol(lexer->getCurrentLexeme(), nullptr, 10);
+                                        if (iOffsetIndex < 0) {
+                                            iOffsetIndex = node.getSize() + iOffsetIndex;
+                                            if (iOffsetIndex < 0)                           // 允许数组下标为负数，但若绝对值超过数组长度则视作违例
+                                                codeError(ERROR_MSSG_INVALID_ARRAY_INDEX);
+                                        }
+                                        currentOp.iType = OP_TYPE_ABS_STACK_INDEX;
+                                        currentOp.iStackIndex = iBaseIndex + iOffsetIndex;
+                                    } else if (indexToken == TOKEN_TYPE_IDENT) {            // 数组下标为标识符
+                                        std::string indexIdent = lexer->getCurrentLexeme();
+                                        SymbolNode indexNode = symbols->getSymbol(indexIdent, uiCurrentFuncIndex);
+                                        if (indexNode.getIndex() == -1)
+                                            codeError(ERROR_MSSG_UNDEFINED_IDENT);
+                                        if (indexNode.getSize() > 1)                        // 指令下标只能为单个标识符而不能为数组元素 TODO：允许使用数组元素作为数组下标
+                                            codeError(ERROR_MSSG_INVALID_ARRAY_INDEX);
+                                        currentOp.iType = OP_TYPE_REL_STACK_INDEX;
+                                        currentOp.iStackIndex = iBaseIndex;                 // 该数组下标为间接地址
+                                        currentOp.iOffsetIndex = indexNode.getStackIndex();
+                                    } else {
+                                        codeError(ERROR_MSSG_INVALID_ARRAY_INDEX);
+                                    }
+                                    if (lexer->getNextToken() != TOKEN_TYPE_CLOSE_BRACKET)  // 下标应以右中括号结尾
+                                        charExpectError(']');
+                                }
+                            }
+
+                            else if (currentOpTypes & OP_FLAG_TYPE_LINE_LABEL) {            // 此时标识符可能为行标签
+                                LabelNode labelNode = labels->getLabel(lexer->getCurrentLexeme(), uiCurrentFuncIndex);
+                                if (labelNode.getIndex() == -1)                             // 行标签必须已定义
+                                    codeError(ERROR_MSSG_UNDEFINED_LINE_LABEL);
+                                currentOp.iType = OP_TYPE_INSTR_INDEX;                      // 操作数类型为指令地址
+                                currentOp.uiInstrIndex = (unsigned int)labelNode.getIndex();
+                            }
+
+                            else if (currentOpTypes & OP_FLAG_TYPE_FUNC_NAME) {             // 此时标识符可能为函数名
+                                FuncNode funcNode = functions->getFunction(lexer->getCurrentLexeme());
+                                if (funcNode.getIndex() == -1)                              // 函数必须在第一遍扫描时定义
+                                    codeError(ERROR_MSSG_UNDEFINED_FUNC);
+                                currentOp.iType = OP_TYPE_FUNC_INDEX;
+                                currentOp.iFuncIndex = funcNode.getIndex();
+                            }
+
+                            else if (currentOpTypes & OP_FLAG_TYPE_HOST_API_CALL) {         // 此时标识符可能为系统调用
+                                unsigned int apiIndex = strings->insert(lexer->getCurrentLexeme());
+                                currentOp.iType = OP_TYPE_HOST_API_CALL_INDEX;
+                                currentOp.uiHostAPICallIndex = apiIndex;
+                            }
+
+                            break;
+                        }
                         default: {
                             codeError(ERROR_MSSG_INVALID_OP);
                             break;
                         }
                     }
+                    opList.emplace_back(currentOp);
+
+                    if (uiOpIndex < instr.getOpCount() - 1 && lexer->getNextToken() != TOKEN_TYPE_COMMA)
+                        charExpectError(',');                                               // 非最后一个参数，后要跟分隔符
                 }
+
+                if (lexer->getNextToken() != TOKEN_TYPE_NEWLINE)                            // 整条指令之后不应当有额外的 token 存在
+                    codeError(ERROR_MSSG_INVALID_INPUT);
+                instructions->setOpList(uiCurrentInstrIndex++, opList);
+                break;
             }
+
+            // 本轮扫描只生成指令，对其他 token 不关心
+            default:
+                break;
         }
+
+        if (!lexer->skipLine())
+            break;
     }
 }

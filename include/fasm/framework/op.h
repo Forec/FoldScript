@@ -15,14 +15,14 @@
 struct Op {
     unsigned char iType;
     union {
-        int iIntLiteral;                        // 整型
-        float fFloatLiteral;                    // 浮点型
-        unsigned int iStringTableIndex;         // 字符串表索引
-        unsigned int iStackIndex;               // 堆栈索引
-        unsigned int iInstrIndex;               // 指令索引
-        unsigned int iFuncIndex;                // 函数索引
-        unsigned int iHostAPICallIndex;         // 系统 API 调用编号
-        unsigned int iReg;                      // 寄存器编号
+        int iIntLiteral;                         // 整型
+        float fFloatLiteral;                     // 浮点型
+        int iFuncIndex;                          // 函数索引
+        int iStackIndex;                         // 堆栈索引
+        unsigned int uiStringTableIndex;         // 字符串表索引
+        unsigned int uiInstrIndex;               // 指令索引
+        unsigned int uiHostAPICallIndex;         // 系统 API 调用编号
+        unsigned int uiReg;                      // 寄存器编号
     };
     int iOffsetIndex;
 };

@@ -26,6 +26,7 @@ public:
     void setInstr(unsigned long index, const Instr &instr);
     void setOpCode(unsigned long index, unsigned int opCode);
     void setOpCount(unsigned long index, unsigned int opCount);
+    void setOpList(unsigned long index, const std::vector<Op> & opList);
 };
 
 #endif //FOLDSCRIPT_INSTABLE_H

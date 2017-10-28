@@ -30,6 +30,11 @@ void InstrTable::setOpCount(unsigned long index, unsigned int opCount) {
         instrStream[index].uiOpCount = opCount;
 }
 
+void InstrTable::setOpList(unsigned long index, const std::vector<Op> &opList) {
+    if (index < instrStream.size())
+        instrStream[index].OpList = opList;
+}
+
 unsigned long InstrTable::getSize() {
     return instrStream.size();
 }
