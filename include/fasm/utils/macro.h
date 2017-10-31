@@ -57,7 +57,7 @@
 #define GRAMMAR_VAR                   "VAR"           // 声明变量
 #define GRAMMAR_FUNC                  "FUNC"          // 定义函数
 #define GRAMMAR_PARAM                 "PARAM"         // 声明参数
-#define GRAMMAR_RESULT_REGISTER       "_RETVAL"       // 返回值寄存器
+#define GRAMMAR_RESULT_REGISTER       "_RETVAR"       // 返回值寄存器
 #define GRAMMAR_MAIN_FUNC_NAME        "_MAIN"         // 主函数名
 
 /*

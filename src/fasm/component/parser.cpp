@@ -4,8 +4,9 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "macro.h"
+#include <sstream>
 #include "utils.h"
+#include "macro.h"
 #include "instrlookup.h"
 #include "parser.h"
 
@@ -16,10 +17,12 @@ Parser::Parser() {
     labels = new LabelTable();
     instructions = new InstrTable();
     strings = new StringTable();
+    hostapis = new StringTable();
     reset();
 }
 
 Parser::~Parser() {
+    delete hostapis;
     delete strings;
     delete instructions;
     delete labels;
@@ -41,6 +44,7 @@ void Parser::reset() {
     isSetStackSizeFound = false;
     isFuncActive = false;
     currentFunction = FuncNode(0, 0);
+    execFilename = "default.XSE";
 
     lexer->reset();
     functions->reset();
@@ -48,10 +52,11 @@ void Parser::reset() {
     labels->reset();
     instructions->reset();
     strings->reset();
+    hostapis->reset();
 }
 
 void Parser::codeError(const std::string &err) {
-    std::string LineInfo = "第 " + std::to_string(lexer->getCurrentSourceLine()) + " 行: ";
+    std::string LineInfo = "第 " + std::to_string(lexer->getCurrentSourceLine() + 1 + lexer->getSource()->getSkipLine()) + " 行: ";
     std::cerr << "错误: " << err << std::endl << LineInfo;
     std::cerr << lexer->getSource()->readCompressedLine(lexer->getCurrentSourceLine()) << std::endl;
     std::string space;
@@ -62,6 +67,10 @@ void Parser::codeError(const std::string &err) {
 
 void Parser::charExpectError(char code) {
     codeError("缺少" + std::to_string(code));
+}
+
+void Parser::setExecFilename(const std::string & name) {
+    execFilename = name;
 }
 
 void Parser::initFromString(const std::string &str) {
@@ -117,15 +126,17 @@ void Parser::assemble() {
                 break;
             }
             case TOKEN_TYPE_CLOSE_BRACE:{
-                    if (!isFuncActive)                                  // 出现花括号表明当前应处于函数内部
+                if (!isFuncActive)                                      // 出现花括号表明当前应处于函数内部
                         charExpectError('}');
                 functions->setFunction(currentFuncName, uiCurrentFuncParamCount, uiCurrentFuncLocalDataSize);
                 isFuncActive = false;
+                uiCurrentFuncIndex = 0;
                 break;
             }
             case TOKEN_TYPE_VAR: {
                 if (lexer->getNextToken() != TOKEN_TYPE_IDENT)          // VAR 后应当跟随标识符定义变量
                     codeError(ERROR_MSSG_IDENT_EXPECTED);
+                std::string currentVar = lexer->getCurrentLexeme();
                 unsigned int uiSize = 1;
                 if (lexer->getLookAheadChar() == '[') {                 // 标识符后跟随左中括号表明定义数组
                     if (lexer->getNextToken() != TOKEN_TYPE_OPEN_BRACKET)
@@ -147,7 +158,7 @@ void Parser::assemble() {
                     iStackIndex = (int) uiGlobalDataSize;
                     uiGlobalDataSize += uiSize;
                 }
-                if (-1 == symbols->addSymbol(lexer->getCurrentLexeme(), uiSize, iStackIndex, uiCurrentFuncIndex))
+                if (-1 == symbols->addSymbol(currentVar, uiSize, iStackIndex, uiCurrentFuncIndex))
                     codeError(ERROR_MSSG_IDENT_REDEFINITION);
                 break;
             }
@@ -172,7 +183,7 @@ void Parser::assemble() {
                 break;
             }
             case TOKEN_TYPE_INSTR: {
-                if (isFuncActive)
+                if (!isFuncActive)
                     codeError(ERROR_MSSG_GLOBAL_INSTR);
                 iInstrStreamSize++;
                 break;
@@ -305,7 +316,7 @@ void Parser::assemble() {
                                         charExpectError('[');
                                     Token indexToken = lexer->getNextToken();
                                     if (indexToken == TOKEN_TYPE_INT) {
-                                        int iOffsetIndex = strtol(lexer->getCurrentLexeme(), nullptr, 10);
+                                        int iOffsetIndex = (int)strtol(lexer->getCurrentLexeme().c_str(), nullptr, 10);
                                         if (iOffsetIndex < 0) {
                                             iOffsetIndex = node.getSize() + iOffsetIndex;
                                             if (iOffsetIndex < 0)                           // 允许数组下标为负数，但若绝对值超过数组长度则视作违例
@@ -348,7 +359,7 @@ void Parser::assemble() {
                             }
 
                             else if (currentOpTypes & OP_FLAG_TYPE_HOST_API_CALL) {         // 此时标识符可能为系统调用
-                                unsigned int apiIndex = strings->insert(lexer->getCurrentLexeme());
+                                unsigned int apiIndex = hostapis->insert(lexer->getCurrentLexeme());
                                 currentOp.iType = OP_TYPE_HOST_API_CALL_INDEX;
                                 currentOp.uiHostAPICallIndex = apiIndex;
                             }
@@ -366,8 +377,6 @@ void Parser::assemble() {
                         charExpectError(',');                                               // 非最后一个参数，后要跟分隔符
                 }
 
-                if (lexer->getNextToken() != TOKEN_TYPE_NEWLINE)                            // 整条指令之后不应当有额外的 token 存在
-                    codeError(ERROR_MSSG_INVALID_INPUT);
                 instructions->setOpList(uiCurrentInstrIndex++, opList);
                 break;
             }
@@ -380,4 +389,25 @@ void Parser::assemble() {
         if (!lexer->skipLine())
             break;
     }
+}
+
+std::string Parser::statusToString() {
+    auto count = symbols->getSymbolCount();
+    unsigned long uiVarCount = count.first, uiArrayCount = count.second, uiGlobalCount = symbols->getGlobalCount();
+    std::ostringstream ss;
+    ss << execFilename << " 汇编结束" << std::endl;
+    ss << "共处理 " << lexer->getSource()->getSize() << " 行源码" << std::endl;
+    ss << "    堆栈大小: " << (uiStackSize > 0 ? std::to_string(uiStackSize) : "Default") << std::endl;
+    ss << "    指令数量: " << iInstrStreamSize - functions->getSize() << std::endl;
+    ss << "    变量数量: " << uiVarCount << std::endl;
+    ss << "    数组数量: " << uiArrayCount << std::endl;
+    ss << "    全局变量: " << uiGlobalCount << std::endl;
+    ss << "    字符串表: " << strings->getSize() << std::endl;
+    ss << "    行标签数: " << labels->getSize() << std::endl;
+    ss << "    系统调用: " << hostapis->getSize() << std::endl;
+    ss << "    函数定义: " << functions->getSize() << std::endl;
+    ss << "    主函数" << (isMainFunctionPresent ? "" : "不") << "存在"
+       << (isMainFunctionPresent ? ": 主函数下标为 " + std::to_string(uiMainFuncIndex) : "") << std::endl;
+    ss.flush();
+    return ss.str();
 }

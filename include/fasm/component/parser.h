@@ -35,6 +35,9 @@ private:
     LabelTable * labels;
     InstrTable * instructions;
     StringTable * strings;
+    StringTable * hostapis;
+
+    std::string execFilename;
 
     Lexer * lexer;
 public:
@@ -42,8 +45,10 @@ public:
     ~Parser();
     bool initFromFile(const std::string &path);
     void initFromString(const std::string &str);
+    void setExecFilename(const std::string &name);
     void reset();
     void assemble();
+    std::string statusToString();
 
     // 错误处理
     void codeError(const std::string &err);

@@ -26,3 +26,7 @@ LabelNode LabelTable::getLabel(const std::string &name, unsigned int funcIndex) 
         return LabelNode{};
     return pair->second;
 }
+
+unsigned long LabelTable::getSize() {
+    return iTable.size();
+}

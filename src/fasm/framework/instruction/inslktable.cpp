@@ -2,6 +2,7 @@
 // Created by 王耀 on 2017/10/8.
 //
 
+#include <algorithm>
 #include "inslktable.h"
 #include "macro.h"
 
@@ -14,25 +15,31 @@ InstrLookupTable::~InstrLookupTable() {
 }
 
 bool InstrLookupTable::addInstrLookup(const std::string &mnemonic, unsigned int opCode, unsigned int opCount) {
-    if (iTable.find(mnemonic) != iTable.end())
+    std::string name = mnemonic;
+    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+    if (iTable.find(name) != iTable.end())
         return false;
-    iTable.insert(std::make_pair(mnemonic, InstrLookup(opCode, opCount)));
+    iTable.insert(std::make_pair(name, InstrLookup(opCode, opCount)));
     return true;
 }
 
 InstrLookup InstrLookupTable::getInstrLookup(const std::string &mnemonic) {
-    auto pair = iTable.find(mnemonic);
+    std::string name = mnemonic;
+    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+    auto pair = iTable.find(name);
     if (pair == iTable.end())
         return InstrLookup(0, 0);
     return pair->second;
 }
 
 void InstrLookupTable::setInstrOpType(const std::string &mnemonic, unsigned int opIndex, OpTypes type) {
-    InstrLookup instr = getInstrLookup(mnemonic);
+    std::string name = mnemonic;
+    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+    InstrLookup instr = getInstrLookup(name);
     if (instr.getOpCode() != 0) {
         instr.setOpType(opIndex, type);
-        iTable.erase(mnemonic);
-        iTable.insert(std::make_pair(mnemonic, instr));
+        iTable.erase(name);
+        iTable.insert(std::make_pair(name, instr));
     }
 }
 

@@ -16,6 +16,7 @@ TEST(LexerTest, LexerTest_RESET_Test) {
 }
 
 TEST(LexerTest, LexerTest_SKIPLINE_Test) {
+
     Lexer lexer;
     lexer.initFromString("var X; 声明X \n var Y\t\nmov X, Y");
     EXPECT_EQ(3, lexer.getSource()->getSize());

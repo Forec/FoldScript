@@ -30,5 +30,5 @@ unsigned int StringTable::insert(const std::string &string) {
 }
 
 unsigned long StringTable::getSize() {
-    return iTable.size();
+    return iMap.find("") == iMap.end() ? iTable.size() : iTable.size() - 1;
 }

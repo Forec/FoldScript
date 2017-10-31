@@ -30,6 +30,10 @@ public:
     SymbolNode getSymbol(const std::string &ident, unsigned int funcIndex = 0);
     int getStackIndex(const std::string &ident, unsigned int funcIndex = 0);
     int getSize(const std::string &ident, unsigned int funcIndex = 0);
+
+    // 统计数据
+    unsigned long getGlobalCount();
+    std::pair<unsigned long, unsigned long> getSymbolCount();   // <Var, Array>
 };
 
 #endif //FOLDSCRIPT_SYMTABLE_H

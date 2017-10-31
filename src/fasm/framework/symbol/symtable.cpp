@@ -48,3 +48,24 @@ int SymbolTable::getStackIndex(const std::string &ident, unsigned int funcIndex)
 int SymbolTable::getSize(const std::string &ident, unsigned int funcIndex) {
     return getSymbol(ident, funcIndex).getSize();
 }
+
+unsigned long SymbolTable::getGlobalCount() {
+    return iGlobal.size();
+}
+
+std::pair<unsigned long, unsigned long> SymbolTable::getSymbolCount() {
+    std::pair<unsigned long, unsigned long> count = std::make_pair(0, 0);
+    for (auto iterator: iTable) {
+        if (iterator.second.getSize() > 1)
+            count.second++;
+        else
+            count.first++;
+    }
+    for (auto iterator: iGlobal) {
+        if (iterator.second.getSize() > 1)
+            count.second++;
+        else
+            count.first++;
+    }
+    return count;
+}

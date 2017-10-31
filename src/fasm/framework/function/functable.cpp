@@ -16,6 +16,10 @@ void FuncTable::reset() {
     iTable.clear();
 }
 
+unsigned long FuncTable::getSize() {
+    return iTable.size();
+}
+
 int FuncTable::addFunction(const std::string &name, int entryPoint) {
     if (iTable.find(name) != iTable.end())                              // 已存在同名函数，返回无效索引
         return -1;

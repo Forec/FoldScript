@@ -11,6 +11,7 @@
 SourceCode::SourceCode() {
     initialized = false;
     isInitFromFile = false;
+    uiSkipLine = 0;
     source.clear();
 }
 
@@ -54,7 +55,11 @@ std::string SourceCode::getFilename() {
 }
 
 unsigned long SourceCode::getSize() {
-    return source.size();
+    return source.size() + uiSkipLine;
+}
+
+unsigned long SourceCode::getSkipLine() {
+    return uiSkipLine;
 }
 
 bool SourceCode::isInitialized() {
@@ -110,6 +115,8 @@ void SourceCode::trimWhitespace() {
             it = it.substr(0, rightTrimIndex + 2);
         if (!it.empty())
             filterList.emplace_back(it);
+        else
+            uiSkipLine++;
     }
     source.clear();
     source = filterList;

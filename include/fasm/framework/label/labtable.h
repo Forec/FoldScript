@@ -24,6 +24,7 @@ private:
 public:
     LabelTable();
     void reset();
+    unsigned long getSize();
     int addLabel(const std::string &name, unsigned int targetIndex, unsigned int funcIndex);
     LabelNode getLabel(const std::string &name, unsigned int funcIndex);
 };
