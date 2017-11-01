@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include "macro.h"
 #include "utils.h"
 #include "source.h"
@@ -21,7 +22,17 @@ SourceCode::~SourceCode() {
 
 bool SourceCode::initFromFile(const std::string &path) {
     source.clear();
-    // TODO: 读入代码
+    std::ifstream fin;
+    fin.open(path, std::ios_base::in);
+    if (fin.bad())
+        return false;
+    std::string sourceCode;
+    std::string line;
+    while (std::getline(fin, line)) {
+        sourceCode += line + "\n";
+    }
+    fin.close();
+    initFromString(sourceCode);
     filename = path;
     initialized = true;
     isInitFromFile = true;

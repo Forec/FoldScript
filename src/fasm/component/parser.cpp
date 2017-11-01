@@ -3,6 +3,7 @@
 //
 
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include "utils.h"
@@ -44,7 +45,7 @@ void Parser::reset() {
     isSetStackSizeFound = false;
     isFuncActive = false;
     currentFunction = FuncNode(0, 0);
-    execFilename = "default.XSE";
+    execFilename = "default.fec";
 
     lexer->reset();
     functions->reset();
@@ -395,7 +396,7 @@ std::string Parser::statusToString() {
     auto count = symbols->getSymbolCount();
     unsigned long uiVarCount = count.first, uiArrayCount = count.second, uiGlobalCount = symbols->getGlobalCount();
     std::ostringstream ss;
-    ss << execFilename << " 汇编结束" << std::endl;
+    ss << "汇编结束!" << std::endl;
     ss << "共处理 " << lexer->getSource()->getSize() << " 行源码" << std::endl;
     ss << "    堆栈大小: " << (uiStackSize > 0 ? std::to_string(uiStackSize) : "Default") << std::endl;
     ss << "    指令数量: " << iInstrStreamSize - functions->getSize() << std::endl;
@@ -410,4 +411,13 @@ std::string Parser::statusToString() {
        << (isMainFunctionPresent ? ": 主函数下标为 " + std::to_string(uiMainFuncIndex) : "") << std::endl;
     ss.flush();
     return ss.str();
+}
+
+void Parser::exportFEC() {
+    std::ofstream writer;
+    writer.open(execFilename, std::ios_base::binary | std::ios_base::out);
+    if (writer.bad())
+        exitOnError("无法打开文件 " + execFilename);
+    writer << FEC_ID_STRING << VERSION_MAJOR << VERSION_MINOR;
+    writer.close();
 }

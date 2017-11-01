@@ -48,6 +48,7 @@ public:
     void setExecFilename(const std::string &name);
     void reset();
     void assemble();
+    void exportFEC();
     std::string statusToString();
 
     // 错误处理

@@ -6,7 +6,7 @@
 #define FOLDSCRIPT_LEXER_H
 
 #include <string>
-#include "inslktable.h"
+#include "../framework/instruction/inslktable.h"
 #include "source.h"
 
 typedef unsigned char Token;

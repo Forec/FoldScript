@@ -17,6 +17,16 @@
 #endif
 
 /*
+ * FASM 及 FEC 可执行文件格式
+ */
+#define FASM_FILE_EXT                 ".FASM"  // 汇编文件源码扩展名
+#define EXEC_FILE_EXT                 ".FEC"   // 可执行文件扩展名
+#define FEC_ID_STRING                 "FEC0"   // FEC 可执行文件标识符
+#define VERSION_MAJOR                 0x00     // 主版本号
+#define VERSION_MINOR                 0x01     // 次版本号
+
+
+/*
  * 词法相关分隔符定义
  */
 #define CODE_STRING_DELIMITER '"'
