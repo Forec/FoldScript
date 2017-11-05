@@ -19,6 +19,7 @@ public:
     void reset();
     unsigned long getSize();
     unsigned int insert(const std::string & string);
+    std::string getString(unsigned int index);
 };
 
 #endif //FOLDSCRIPT_STRTABLE_H

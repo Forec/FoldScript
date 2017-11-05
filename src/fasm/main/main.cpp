@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <string>
 #include <iostream>
-#include <algorithm>
 #include <gflags/gflags.h>
 #include "macro.h"
 #include "parser.h"

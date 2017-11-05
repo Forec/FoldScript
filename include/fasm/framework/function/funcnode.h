@@ -14,6 +14,18 @@
  * @iName: 函数名称
  */
 
+/*
+ * 堆栈结构：
+ *                    -1 | 保留
+ *                    -2 | 局部变量
+ *                    .. | 局部变量
+ *                    .. | 局部变量
+ *   Local_data_size + 2 | 返回地址
+ *   Local_data_size + 3 | 参数
+ *                    .. | 参数
+ *                    .. | 参数
+ */
+
 class FuncNode {
 private:
     int iIndex;

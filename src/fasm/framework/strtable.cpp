@@ -16,7 +16,6 @@ StringTable::~StringTable() {
 void StringTable::reset() {
     iMap.clear();
     iTable.clear();
-    insert("");
 }
 
 
@@ -30,5 +29,11 @@ unsigned int StringTable::insert(const std::string &string) {
 }
 
 unsigned long StringTable::getSize() {
-    return iMap.find("") == iMap.end() ? iTable.size() : iTable.size() - 1;
+    return iTable.size();
+}
+
+std::string StringTable::getString(unsigned int index) {
+    if (index >= iTable.size())
+        return "";
+    return iTable.at(index);
 }

@@ -39,7 +39,7 @@ std::string StandardStatus = \
         "汇编结束!\n共处理 28 行源码\n" \
         "    堆栈大小: 20\n    指令数量: 15\n    变量数量: 6\n    数组数量: 1\n" \
         "    全局变量: 2\n    字符串表: 1\n    行标签数: 0\n    系统调用: 1\n" \
-        "    函数定义: 2\n    主函数存在: 主函数下标为 1\n";
+        "    函数定义: 2\n主函数存在: 主函数下标为 1\n";
 
 TEST(ParserTest, ParserTest_STATUS_Test) {
     Parser parser;

@@ -1,0 +1,28 @@
+setstacksize 20 ;; 设置堆栈大小              
+Var Array[256]  ;; 声明数组 Array            
+Var X;          ;; 声明全局变量 X            
+Func MyAdd {    ;; 声明函数 MyAdd，将两个参数相加
+    Param X2      ;; 声明参数 X2                
+    Param Y       ;; 声明参数 Y                 
+    Var Sum       ;; 定义局部变量 Sum           
+    Mov Sum, X2   ;; 将 X2 移至 Sum             
+    Add Sum, Y    ;; 将 X2 与 Y 相加            
+    Mov _RetVar, Sum ;; 将结果存储在返回值寄存器中  
+    ;; Ret 指令会自动添加在这一行                  
+}                                             
+Func _Main {    ;; 主函数                     
+    Var MySum     ;; 声明局部变量 MySum         
+    Var Y         ;; 声明局部变量 Y             
+    Mov Y, 10     ;; 给 Y 赋值 10               
+    Mov X, 20     ;; 给 X 赋值 20               
+    Push Y        ;; 压入参数 Y                 
+    Push X        ;; 压入参数 X                 
+    Call MyAdd    ;; 调用函数 MyAdd             
+    Mov MySum, _RetVar   ;; 将结果压入 MySum    
+    Mov Array[0], "Hello, the result is "     
+    Mov Array[1], MySum                         
+    Push Array[0] ;; 将待打印数组地址压入堆栈   
+    Push Array[1] ;; 将待打印数组地址压入堆栈   
+    Push 2        ;; 将待打印元素个数压入堆栈   
+    CallHost Print;; 系统调用，打印结果                 
+}

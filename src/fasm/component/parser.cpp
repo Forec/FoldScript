@@ -132,6 +132,8 @@ void Parser::assemble() {
                 functions->setFunction(currentFuncName, uiCurrentFuncParamCount, uiCurrentFuncLocalDataSize);
                 isFuncActive = false;
                 uiCurrentFuncIndex = 0;
+                uiCurrentFuncParamCount = 0;
+                uiCurrentFuncLocalDataSize = 0;
                 break;
             }
             case TOKEN_TYPE_VAR: {
@@ -407,7 +409,7 @@ std::string Parser::statusToString() {
     ss << "    行标签数: " << labels->getSize() << std::endl;
     ss << "    系统调用: " << hostapis->getSize() << std::endl;
     ss << "    函数定义: " << functions->getSize() << std::endl;
-    ss << "    主函数" << (isMainFunctionPresent ? "" : "不") << "存在"
+    ss << "主函数" << (isMainFunctionPresent ? "" : "不") << "存在"
        << (isMainFunctionPresent ? ": 主函数下标为 " + std::to_string(uiMainFuncIndex) : "") << std::endl;
     ss.flush();
     return ss.str();
@@ -418,6 +420,72 @@ void Parser::exportFEC() {
     writer.open(execFilename, std::ios_base::binary | std::ios_base::out);
     if (writer.bad())
         exitOnError("无法打开文件 " + execFilename);
-    writer << FEC_ID_STRING << VERSION_MAJOR << VERSION_MINOR;
+    writer.write(FEC_ID_STRING, 4);                                                             // 4B 可执行文件标识符
+    char majorVersion = VERSION_MAJOR, minorVersion = VERSION_MINOR;
+    writer.write(&majorVersion, 1);                                                             // 1B 主版本号
+    writer.write(&minorVersion, 1);                                                             // 1B 次版本号
+
+    writer.write((char *)&uiStackSize, 4);                                                      // 4B 堆栈大小
+    writer.write((char *)&uiGlobalDataSize, 4);                                                 // 4B 全局数据大小
+
+    char tmp = isMainFunctionPresent;
+    writer.write(&tmp, 1);                                                                      // 1B 是否存在主函数
+    writer.write((char *)&uiMainFuncIndex, 4);                                                  // 4B 主函数索引
+    int realInstrStreamSize = iInstrStreamSize - (int)functions->getSize();
+    writer.write((char *)&realInstrStreamSize, 4);                                              // 4B 指令长度
+
+    for (unsigned int i = 0; i < iInstrStreamSize; ++i) {
+        Instr instruction = instructions->getInstr(i);
+        writer.write((char *)&instruction.uiOpCode, 2);                                         // 2B 当前指令 Op
+        writer.write((char *)&instruction.uiOpCount, 1);                                        // 1B 当前指令操作数数量
+
+        for (unsigned int j = 0; j < instruction.uiOpCount; ++j) {
+            Op operation = instruction.OpList[j];
+            writer.write((char *)&operation.iType, 1);                                          // 1B 操作数类型
+            switch (operation.iType) {
+                case OP_TYPE_INT:
+                    writer.write((char *)&operation.iIntLiteral, sizeof(int));                  // 2/4B int
+                    break;
+                case OP_TYPE_FLOAT:
+                    writer.write((char *)&operation.fFloatLiteral, sizeof(float));              // 4B float
+                    break;
+                case OP_TYPE_STRING_INDEX:
+                    writer.write((char *)&operation.uiStringTableIndex, sizeof(unsigned int));  // 2/4B unsigned int
+                    break;
+                case OP_TYPE_INSTR_INDEX:
+                    writer.write((char *)&operation.uiInstrIndex, sizeof(unsigned int));        // 2/4B unsigned int
+                    break;
+                case OP_TYPE_ABS_STACK_INDEX:
+                    writer.write((char *)&operation.iStackIndex, sizeof(int));                  // 2/4B int
+                    break;
+                case OP_TYPE_REL_STACK_INDEX:
+                    writer.write((char *)&operation.iStackIndex, sizeof(int));                  // 2/4B int
+                    writer.write((char *)&operation.iOffsetIndex, sizeof(int));                 // 2/4B int
+                    break;
+                case OP_TYPE_FUNC_INDEX:
+                    writer.write((char *)&operation.iFuncIndex, sizeof(int));                   // 2/4B int
+                    break;
+                case OP_TYPE_HOST_API_CALL_INDEX:
+                    writer.write((char *)&operation.uiHostAPICallIndex, sizeof(unsigned int));  // 2/4B unsigned int
+                    break;
+                case OP_TYPE_REG:
+                    writer.write((char *)&operation.uiReg, sizeof(unsigned int));               // 2/4B unsigned int
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // 写字符串表
+    unsigned long stringCount = strings->getSize();
+    writer.write((char *)&stringCount, sizeof(long));                                           // 4/8B long
+    for (unsigned int i = 0; i < stringCount; ++i) {
+        std::string currentStr = strings->getString(i);
+        unsigned long strLength = currentStr.length();
+        writer.write((char *)&strLength, sizeof(long));                                         // 4/8B long
+        writer.write(currentStr.c_str(), currentStr.length());                                  // 4/8B long
+    }
+
     writer.close();
 }
