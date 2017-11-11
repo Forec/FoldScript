@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_INSTR_H
-#define FOLDSCRIPT_INSTR_H
+#ifndef FOLDSCRIPT_ASM_INSTR_H
+#define FOLDSCRIPT_ASM_INSTR_H
 
 #include "../op.h"
 #include <vector>
@@ -23,4 +23,4 @@ struct Instr {
     Instr(unsigned int opCode, unsigned int opCount, const std::vector<Op> &opList);
 };
 
-#endif //FOLDSCRIPT_INSTR_H
+#endif //FOLDSCRIPT_ASM_INSTR_H

@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/10.
 //
 
-#ifndef FOLDSCRIPT_SOURCE_H
-#define FOLDSCRIPT_SOURCE_H
+#ifndef FOLDSCRIPT_ASM_SOURCE_H
+#define FOLDSCRIPT_ASM_SOURCE_H
 
 #include <vector>
 #include <string>
@@ -31,4 +31,4 @@ public:
     void trimWhitespace();
 };
 
-#endif //FOLDSCRIPT_SOURCE_H
+#endif //FOLDSCRIPT_ASM_SOURCE_H

@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_SHEADER_H
-#define FOLDSCRIPT_SHEADER_H
+#ifndef FOLDSCRIPT_ASM_SHEADER_H
+#define FOLDSCRIPT_ASM_SHEADER_H
 
 /*
  * ScriptHeader: 脚本头部元数据
@@ -20,4 +20,4 @@ struct ScriptHeader {
     unsigned int iMainFuncIndex;
 };
 
-#endif //FOLDSCRIPT_SHEADER_H
+#endif //FOLDSCRIPT_ASM_SHEADER_H

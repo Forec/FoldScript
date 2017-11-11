@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/8.
 //
 
-#ifndef FOLDSCRIPT_LABNODE_H
-#define FOLDSCRIPT_LABNODE_H
+#ifndef FOLDSCRIPT_ASM_LABNODE_H
+#define FOLDSCRIPT_ASM_LABNODE_H
 
 /*
  * LabelNode: 跳转标签节点
@@ -24,4 +24,4 @@ public:
     int getIndex() { return iIndex; }
 };
 
-#endif //FOLDSCRIPT_LABNODE_H
+#endif //FOLDSCRIPT_ASM_LABNODE_H

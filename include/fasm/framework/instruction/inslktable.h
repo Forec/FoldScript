@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/8.
 //
 
-#ifndef FOLDSCRIPT_INSLKTABLE_H
-#define FOLDSCRIPT_INSLKTABLE_H
+#ifndef FOLDSCRIPT_ASM_INSLKTABLE_H
+#define FOLDSCRIPT_ASM_INSLKTABLE_H
 
 #include <string>
 #include <unordered_map>
@@ -27,4 +27,4 @@ public:
     OpTypes getInstrOpType(const std::string &mnemonic, unsigned int opIndex);
 };
 
-#endif //FOLDSCRIPT_INSLKTABLE_H
+#endif //FOLDSCRIPT_ASM_INSLKTABLE_H

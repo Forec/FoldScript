@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_FUNCTABLE_H
-#define FOLDSCRIPT_FUNCTABLE_H
+#ifndef FOLDSCRIPT_ASM_FUNCTABLE_H
+#define FOLDSCRIPT_ASM_FUNCTABLE_H
 
 #include <string>
 #include <unordered_map>
@@ -31,4 +31,4 @@ public:
     FuncNode getFunction(const std::string & name);
 };
 
-#endif //FOLDSCRIPT_FUNCTABLE_H
+#endif //FOLDSCRIPT_ASM_UNCTABLE_H

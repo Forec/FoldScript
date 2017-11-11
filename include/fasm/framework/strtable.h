@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_STRTABLE_H
-#define FOLDSCRIPT_STRTABLE_H
+#ifndef FOLDSCRIPT_ASM_STRTABLE_H
+#define FOLDSCRIPT_ASM_STRTABLE_H
 
 #include <string>
 #include <unordered_map>
@@ -22,4 +22,4 @@ public:
     std::string getString(unsigned int index);
 };
 
-#endif //FOLDSCRIPT_STRTABLE_H
+#endif //FOLDSCRIPT_ASM_STRTABLE_H

@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/8.
 //
 
-#ifndef FOLDSCRIPT_INSTABLE_H
-#define FOLDSCRIPT_INSTABLE_H
+#ifndef FOLDSCRIPT_ASM_INSTABLE_H
+#define FOLDSCRIPT_ASM_INSTABLE_H
 
 /*
  * InstrTable: 代码查找表
@@ -29,4 +29,4 @@ public:
     void setOpList(unsigned long index, const std::vector<Op> & opList);
 };
 
-#endif //FOLDSCRIPT_INSTABLE_H
+#endif //FOLDSCRIPT_ASM_INSTABLE_H

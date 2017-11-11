@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_SYMNODE_H
-#define FOLDSCRIPT_SYMNODE_H
+#ifndef FOLDSCRIPT_ASM_SYMNODE_H
+#define FOLDSCRIPT_ASM_SYMNODE_H
 
 /*
  * SymbolNode: 符号节点（变量）
@@ -30,4 +30,4 @@ public:
     unsigned int getSize() { return uiSize; }
 };
 
-#endif //FOLDSCRIPT_SYMNODE_H
+#endif //FOLDSCRIPT_ASM_SYMNODE_H

@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/14.
 //
 
-#ifndef FOLDSCRIPT_PARSER_H
-#define FOLDSCRIPT_PARSER_H
+#ifndef FOLDSCRIPT_ASM_PARSER_H
+#define FOLDSCRIPT_ASM_PARSER_H
 
 #include <string>
 #include "function/functable.h"
@@ -56,4 +56,4 @@ public:
     void charExpectError(char code);
 };
 
-#endif //FOLDSCRIPT_PARSER_H
+#endif //FOLDSCRIPT_ASM_PARSER_H

@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_FUNCNODE_H
-#define FOLDSCRIPT_FUNCNODE_H
+#ifndef FOLDSCRIPT_ASM_FUNCNODE_H
+#define FOLDSCRIPT_ASM_FUNCNODE_H
 
 /*
  * FuncNode: 函数
@@ -46,4 +46,4 @@ public:
     unsigned int getLocalDataSize() { return uiLocalDataSize; }
 };
 
-#endif //FOLDSCRIPT_FUNCNODE_H
+#endif //FOLDSCRIPT_ASM_FUNCNODE_H

@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_UTILS_H
-#define FOLDSCRIPT_UTILS_H
+#ifndef FOLDSCRIPT_ASM_UTILS_H
+#define FOLDSCRIPT_ASM_UTILS_H
 
 #include <string>
 #include <utility>
@@ -55,4 +55,4 @@ bool isStringIdent(const std::string &string);
 void shutdown();
 void exitOnError(const std::string & err);
 
-#endif //FOLDSCRIPT_UTILS_H
+#endif //FOLDSCRIPT_ASM_UTILS_H

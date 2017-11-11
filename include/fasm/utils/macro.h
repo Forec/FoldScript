@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/8.
 //
 
-#ifndef FOLDSCRIPT_MACRO_H
-#define FOLDSCRIPT_MACRO_H
+#ifndef FOLDSCRIPT_ASM_MACRO_H
+#define FOLDSCRIPT_ASM_MACRO_H
 
 /*
  * 操作系统相关
@@ -221,4 +221,4 @@
 #define ERROR_MSSG_INVALID_ARRAY              "非法数组"
 #define ERROR_MSSG_INVALID_ARRAY_INDEX        "非法数组下标"
 
-#endif //FOLDSCRIPT_MACRO_H
+#endif //FOLDSCRIPT_ASM_MACRO_H

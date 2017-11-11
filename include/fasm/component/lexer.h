@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/10.
 //
 
-#ifndef FOLDSCRIPT_LEXER_H
-#define FOLDSCRIPT_LEXER_H
+#ifndef FOLDSCRIPT_ASM_LEXER_H
+#define FOLDSCRIPT_ASM_LEXER_H
 
 #include <string>
 #include "../framework/instruction/inslktable.h"
@@ -41,4 +41,4 @@ public:
     InstrLookup getCurrentInstr();
 };
 
-#endif //FOLDSCRIPT_LEXER_H
+#endif //FOLDSCRIPT_ASM_LEXER_H

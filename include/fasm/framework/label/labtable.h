@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/8.
 //
 
-#ifndef FOLDSCRIPT_LABTABLE_H
-#define FOLDSCRIPT_LABTABLE_H
+#ifndef FOLDSCRIPT_ASM_LABTABLE_H
+#define FOLDSCRIPT_ASM_LABTABLE_H
 
 #include <string>
 #include <unordered_map>
@@ -29,4 +29,4 @@ public:
     LabelNode getLabel(const std::string &name, unsigned int funcIndex);
 };
 
-#endif //FOLDSCRIPT_LABTABLE_H
+#endif //FOLDSCRIPT_ASM_LABTABLE_H

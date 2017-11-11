@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_SYMTABLE_H
-#define FOLDSCRIPT_SYMTABLE_H
+#ifndef FOLDSCRIPT_ASM_SYMTABLE_H
+#define FOLDSCRIPT_ASM_SYMTABLE_H
 
 #include <string>
 #include <unordered_map>
@@ -36,4 +36,4 @@ public:
     std::pair<unsigned long, unsigned long> getSymbolCount();   // <Var, Array>
 };
 
-#endif //FOLDSCRIPT_SYMTABLE_H
+#endif //FOLDSCRIPT_ASM_SYMTABLE_H

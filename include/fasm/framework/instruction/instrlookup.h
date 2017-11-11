@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/8.
 //
 
-#ifndef FOLDSCRIPT_INSTRLOOKUP_H
-#define FOLDSCRIPT_INSTRLOOKUP_H
+#ifndef FOLDSCRIPT_ASM_INSTRLOOKUP_H
+#define FOLDSCRIPT_ASM_INSTRLOOKUP_H
 
 #include <vector>
 
@@ -22,4 +22,4 @@ public:
     unsigned int getOpCount() { return uiOpCount; }
 };
 
-#endif //FOLDSCRIPT_INSTRLOOKUP_H
+#endif //FOLDSCRIPT_ASM_INSTRLOOKUP_H

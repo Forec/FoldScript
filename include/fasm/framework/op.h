@@ -2,8 +2,8 @@
 // Created by 王耀 on 2017/10/7.
 //
 
-#ifndef FOLDSCRIPT_OP_H
-#define FOLDSCRIPT_OP_H
+#ifndef FOLDSCRIPT_ASM_OP_H
+#define FOLDSCRIPT_ASM_OP_H
 
 /*
 * Op: 操作数
@@ -27,4 +27,4 @@ struct Op {
     int iOffsetIndex;
 };
 
-#endif //FOLDSCRIPT_OP_H
+#endif //FOLDSCRIPT_ASM_OP_H
