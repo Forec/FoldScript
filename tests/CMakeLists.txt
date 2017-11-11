@@ -29,6 +29,7 @@ set(
 )
 
 include_directories(
+        /usr/local/include
         ${PROJECT_SOURCE_DIR}/include/fasm/utils
         ${PROJECT_SOURCE_DIR}/include/fasm/framework
         ${PROJECT_SOURCE_DIR}/include/fasm/framework/function
@@ -52,5 +53,5 @@ target_link_libraries(
         fasm-component
 )
 
-target_link_libraries(runUnitTests gtest gtest_main)
-target_link_libraries(runUnitTests gmock gmock_main)
+target_link_libraries(runUnitTests /usr/local/lib/libgtest.a /usr/local/lib/libgtest_main.a)
+target_link_libraries(runUnitTests /usr/local/lib/libgmock.a /usr/local/lib/libgmock_main.a)

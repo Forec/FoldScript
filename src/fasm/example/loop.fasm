@@ -1,0 +1,27 @@
+setstacksize 128 ;; 设置堆栈大小              
+Var Array[256]   ;; 声明数组 Array            
+Func MyLoop {    ;; 声明函数 MyLoop，为数组 Array 循环赋值
+    Param cnt    ;; 声明参数 cnt                
+    Var index    ;; 定义局部变量 index           
+    mov index, 0 ;; 下标初始化为 0
+    jg index, 256, exit ;; 若待拷贝元素超过数组大小，则不执行任何操作
+loop:
+    mov Array[index], index ;; 赋值
+    inc index     ;; 循环变量自增
+    jl index, cnt, loop     ;; 继续循环
+exit:
+    ;; Ret 指令会自动添加在这一行                  
+}                                             
+Func _Main {    ;; 主函数                     
+    var count   ;; 局部变量 count
+    mov count, 128
+    push count
+    Call MyLoop ;; 调用函数 MyLoop             
+    jne Array[127], 127, fail ;; 检验是否赋值成功
+    jmp quit
+fail:
+    push "failed"
+    push 1
+    callhost print
+quit:
+}
