@@ -45,7 +45,7 @@ TEST(ParserTest, ParserTest_STATUS_Test) {
     Parser parser;
     parser.initFromString(SourceCode1);
     parser.assemble();
-    std::string status = parser.statusToString();
+    std::string status = parser.status2string();
     EXPECT_EQ(StandardStatus1, status);
 }
 
@@ -88,6 +88,6 @@ TEST(ParserTest, ParserTest_LOOP_Test) {
     Parser parser;
     parser.initFromString(SourceCode2);
     parser.assemble();
-    std::string status = parser.statusToString();
+    std::string status = parser.status2string();
     EXPECT_EQ(StandardStatus2, status);
 }
