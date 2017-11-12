@@ -19,6 +19,9 @@ void RuntimeStack::reset() {
 
 void RuntimeStack::setSize(unsigned int size) {
     uiSize = size;
+}
+
+void RuntimeStack::fit() {
     elems.resize(uiSize);
 }
 

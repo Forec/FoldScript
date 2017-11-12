@@ -23,6 +23,8 @@
 
 /*
  * 以下部分与 fasm/utils/macro.h 中定义一致
+ * 除：
+ *   1. 字符串索引 -> 字符串
  */
 
 /*
@@ -44,7 +46,7 @@
 #define OP_TYPE_NULL                  0xFF     // 未初始化数据
 #define OP_TYPE_INT                   0x00     // 整型
 #define OP_TYPE_FLOAT                 0x01     // 浮点型
-#define OP_TYPE_STRING_INDEX          0x02     // 字符串
+#define OP_TYPE_STRING                0x02     // 字符串
 #define OP_TYPE_ABS_STACK_INDEX       0x03     // 绝对堆栈索引
 #define OP_TYPE_REL_STACK_INDEX       0x04     // 相对堆栈索引
 #define OP_TYPE_INSTR_INDEX           0x05     // 指令索引

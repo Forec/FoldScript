@@ -18,8 +18,12 @@ void InstrTable::reset() {
     instrStream.clear();
 }
 
-void InstrTable::resize(unsigned long size) {
-    instrStream.resize(size, Instr(0, 0));
+void InstrTable::setSize(unsigned int size) {
+    uiSize = size;
+}
+
+void InstrTable::fit() {
+    instrStream.resize(uiSize, Instr(0, 0));
 }
 
 void InstrTable::setOpCode(unsigned long index, unsigned int opCode) {
@@ -38,7 +42,7 @@ void InstrTable::setValueList(unsigned long index, const std::vector<Value> &val
 }
 
 unsigned long InstrTable::getSize() {
-    return instrStream.size();
+    return uiSize;
 }
 
 void InstrTable::addInstr(const Instr &ins) {

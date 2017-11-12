@@ -14,7 +14,7 @@
  * @uiSize: 堆栈大小
  * @iFrameIndex: 当前堆栈框架顶部的索引
  *
- * @setSize(): 设置堆栈大小，堆栈会自动调整元素栈的容量
+ * @setSize(): 设置堆栈大小，堆栈不会自动调整元素栈的容量，需通过 fit 自适应
  */
 
 class RuntimeStack {
@@ -27,6 +27,7 @@ public:
     ~RuntimeStack();
     void reset();
     void setSize(unsigned int size);
+    void fit();
     unsigned int getSize();
 };
 

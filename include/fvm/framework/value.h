@@ -17,10 +17,10 @@ struct Value {
     union {
         int iIntLiteral;                        // 整型
         float fFloatLiteral;                    // 浮点型
-        std::string sStringLiteral;				// 字符串
+        char * sStrLiteral;				        // 字符串指针
         int iStackIndex;                        // 堆栈索引
-        int iInstrIndex;                        // 指令索引
         int iFuncIndex;                         // 函数索引
+        int uiInstrIndex;                       // 指令索引
         unsigned int uiHostAPICallIndex;        // 系统调用索引
         unsigned int uiReg;                     // 寄存器编号
     };

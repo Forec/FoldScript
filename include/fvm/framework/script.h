@@ -24,6 +24,7 @@
  * @functions: 脚本函数表
  * @apis: 系统调用表
  *
+ * @fit(): 令各表项根据脚本元信息重新分配内存，动态加载程序
  * @reset(): 脚本重置为空
  * @load(): 从指定文件加载脚本
  */
@@ -34,9 +35,14 @@ class Script {
 private:
     bool isMainFuncPresent;
     bool isPaused;
+    bool isHeaderLoaded;
+    bool isHeaderValid;
+    unsigned int uiStreamSize;
     unsigned int uiMainFuncIndex;
     unsigned int uiGlobalDataSize;
     unsigned long ulPauseEndStamp;
+
+    std::string executableFile;
 
     Value _RetVal;
     RuntimeStack * stack;
@@ -48,7 +54,11 @@ public:
     Script();
     ~Script();
     void reset();
-    Status load(const std::string &path);
+    void fit();
+    void setExecutableFile(const std::string & path);
+    bool isValid();
+    Status loadHeader();
+    bool loadCode();
 };
 
 #endif //FOLDSCRIPT_VM_SCRIPT_H

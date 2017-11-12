@@ -8,6 +8,7 @@
 
 /*
  * InstrTable: 指令表
+ * @uiSize: 指令表长度固定
  */
 
 
@@ -17,11 +18,13 @@
 class InstrTable {
 private:
     std::vector<Instr> instrStream;
+    unsigned int uiSize;
 public:
     InstrTable();
     ~InstrTable();
     void reset();
-    void resize(unsigned long);
+    void fit();
+    void setSize(unsigned int size);
     unsigned long getSize();
     void addInstr(const Instr& ins);
     Instr getInstr(unsigned long index);
