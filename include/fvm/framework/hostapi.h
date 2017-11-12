@@ -19,6 +19,7 @@ public:
     HostAPICallTable();
     ~HostAPICallTable();
     void reset();
+    void append(const std::string& name);
 };
 
 #endif //FOLDSCRIPT_VM_HOSTAPI_H

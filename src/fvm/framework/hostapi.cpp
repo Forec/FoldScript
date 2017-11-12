@@ -15,3 +15,7 @@ HostAPICallTable::~HostAPICallTable() {
 void HostAPICallTable::reset() {
     calls.clear();
 }
+
+void HostAPICallTable::append(const std::string &name) {
+    calls.emplace_back(name);
+}

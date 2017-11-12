@@ -206,6 +206,32 @@ bool Script::loadCode() {
     }
 
     // 读取函数表
+    unsigned int functableSize = 0;
+    reader.read((char *)&functableSize, sizeof(unsigned int));           // 函数表长度：2/4B
+    for (unsigned int uiCurrFuncIndex = 0; uiCurrFuncIndex < functableSize; ++uiCurrFuncIndex) {
+        unsigned int entryPoint = 0;
+        reader.read((char *)&entryPoint, sizeof(unsigned int));          // 函数入口点：2/4B
+        unsigned int paramCount = 0;
+        reader.read((char *)&paramCount, sizeof(unsigned int));          // 函数参数数量：2/4B
+        unsigned int localDataSize = 0;
+        reader.read((char *)&localDataSize, sizeof(unsigned int));       // 局部数据大小
+        unsigned int stackFrameSize = paramCount + 1 + localDataSize;
+        functions->append(Func{entryPoint, paramCount, localDataSize, stackFrameSize});
+    }
 
+    // 读取系统调用表
+    unsigned int apiTableSize = 0;
+    reader.read((char *)&apiTableSize, sizeof(unsigned int));            // 系统调用表长度：2/4B
+    for (unsigned int uiCurrCallIndex = 0; uiCurrCallIndex < apiTableSize; uiCurrCallIndex++) {
+        unsigned int callLength = 0;
+        reader.read((char *)&callLength, sizeof(unsigned int));          // 系统调用名长度：2/4B
+        char * buffer = new char[callLength + 1];
+        reader.read(buffer, callLength);
+        buffer[callLength] = '\0';
+        apis->append(buffer);
+        delete []buffer;
+    }
 
+    reader.close();
+    return true;
 }

@@ -491,7 +491,7 @@ void Parser::exportFEC() {
     writer.write((char *)&functionSize, sizeof(unsigned int));                                  // 2/4B 函数表长度
 
     std::vector<std::string> functionNames = functions->getNameList();
-    for (const auto name: functionNames) {
+    for (const auto& name: functionNames) {
         FuncNode function = functions->getFunction(name);
         int entryPoint = function.getEntryPoint();
         writer.write((char *)&entryPoint, sizeof(int));                                         // 2/4B 函数入口点
