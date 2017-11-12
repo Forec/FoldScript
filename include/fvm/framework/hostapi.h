@@ -20,6 +20,7 @@ public:
     ~HostAPICallTable();
     void reset();
     void append(const std::string& name);
+    unsigned long getSize();
 };
 
 #endif //FOLDSCRIPT_VM_HOSTAPI_H

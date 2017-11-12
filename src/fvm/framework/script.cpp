@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
+#include <sstream>
 #include <fstream>
 #include "macro.h"
 #include "script.h"
@@ -225,7 +226,7 @@ bool Script::loadCode() {
     for (unsigned int uiCurrCallIndex = 0; uiCurrCallIndex < apiTableSize; uiCurrCallIndex++) {
         unsigned int callLength = 0;
         reader.read((char *)&callLength, sizeof(unsigned int));          // 系统调用名长度：2/4B
-        char * buffer = new char[callLength + 1];
+        auto buffer = new char[callLength + 1];
         reader.read(buffer, callLength);
         buffer[callLength] = '\0';
         apis->append(buffer);
@@ -234,4 +235,21 @@ bool Script::loadCode() {
 
     reader.close();
     return true;
+}
+
+std::string Script::status2string() {
+    if (!isValid())
+        return "文件 \"" + executableFile + "\" 加载失败！";
+    std::ostringstream ss;
+    ss << "\"" << executableFile << "\" 加载成功!" << std::endl;
+    ss << "    文件版本: " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
+    ss << "    堆栈大小: " << stack->getSize() << std::endl;
+    ss << "    全局空间: " << uiGlobalDataSize << std::endl;
+    ss << "    函数定义: " << functions->getSize() << std::endl;
+    ss << "    指令长度: " << uiStreamSize << std::endl;
+    ss << "    系统调用: " << apis->getSize() << std::endl;
+    ss << "主函数" << (isMainFuncPresent ? "" : "不") << "存在"
+       << (isMainFuncPresent ? ", 主函数下标为 " + std::to_string(uiMainFuncIndex) : "") << std::endl;
+    ss.flush();
+    return ss.str();
 }

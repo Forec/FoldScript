@@ -58,6 +58,7 @@ public:
     void setExecutableFile(const std::string & path);
     bool isValid();
     Status loadHeader();
+    std::string status2string();
     bool loadCode();
 };
 

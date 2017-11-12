@@ -42,3 +42,7 @@ Func FuncTable::getFunction(unsigned long index) {
         return Func{};
     return functions.at(index);
 }
+
+unsigned long FuncTable::getSize() {
+    return functions.size();
+}

@@ -19,3 +19,7 @@ void HostAPICallTable::reset() {
 void HostAPICallTable::append(const std::string &name) {
     calls.emplace_back(name);
 }
+
+unsigned long HostAPICallTable::getSize() {
+    return calls.size();
+}

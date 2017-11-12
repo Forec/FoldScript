@@ -36,6 +36,7 @@ public:
     ~FuncTable();
     void reset();
     void append(Func function);
+    unsigned long getSize();
     Func getFunction(unsigned long index);
 };
 
