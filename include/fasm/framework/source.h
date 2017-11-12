@@ -8,6 +8,17 @@
 #include <vector>
 #include <string>
 
+/*
+ * SourceCode: 源码集合，并对源码做一定文本处理（去除注释、多余空白字符等）
+ * @source: 以行为索引，对应源码每一行的容器
+ * @initialized: 是否已通过某份源码初始化
+ * @uiSkipLine: 因为文本处理而遗弃的代码行数
+ *
+ * @initFromFile/String(): 从文件/字符串中导入源码
+ * @stripComments(): 去除源码中的注释，此操作为原地操作
+ * @trimWhiteSpace(): 去除源码中多余的空白字符，此操作为原地操作
+ */
+
 class SourceCode {
 private:
     std::vector<std::string> source;

@@ -7,12 +7,26 @@
 
 #include <vector>
 
+/*
+ * Func: 函数
+ * @uiEntryPoint: 函数入口地址
+ * @uiParamCount: 函数参数数量
+ * @uiLocalDataSize: 函数局部数据大小
+ * @uiStackFrameSize: 函数堆栈大小
+ */
+
 struct Func {
-    unsigned long ulEntryPoint;
+    unsigned int uiEntryPoint;
     unsigned int uiParamCount;
-    unsigned long ulLocalDataSize;
-    unsigned long ulStackFrameSize;
+    unsigned int uiLocalDataSize;
+    unsigned int uiStackFrameSize;
+    Func();
+    Func(unsigned int, unsigned int, unsigned int, unsigned int);
 };
+
+/*
+ * FuncTable: 函数表
+ */
 
 class FuncTable {
 private:

@@ -7,6 +7,11 @@
 
 #include <string>
 
+/*
+ * VM: FoldScript 虚拟机
+ * @loadExecutable(): 从可执行文件导入
+ */
+
 class VM {
 private:
 public:

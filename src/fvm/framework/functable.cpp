@@ -4,6 +4,23 @@
 
 #include "functable.h"
 
+Func::Func() {
+    uiEntryPoint = 0;
+    uiParamCount = 0;
+    uiLocalDataSize = 0;
+    uiStackFrameSize = 0;
+}
+
+Func::Func(unsigned int entryPoint,
+           unsigned int paramCount,
+           unsigned int localDataSize,
+           unsigned int stackFrameSize) {
+    uiEntryPoint = entryPoint;
+    uiParamCount = paramCount;
+    uiLocalDataSize = localDataSize;
+    uiStackFrameSize = stackFrameSize;
+}
+
 FuncTable::FuncTable() {
     reset();
 }
@@ -22,6 +39,6 @@ void FuncTable::append(Func function) {
 
 Func FuncTable::getFunction(unsigned long index) {
     if (index >= functions.size())
-        return Func{0, 0, 0, 0};
+        return Func{};
     return functions.at(index);
 }

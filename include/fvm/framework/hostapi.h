@@ -8,6 +8,10 @@
 #include <string>
 #include <vector>
 
+/*
+ * HostAPICallTable: 系统调用表
+ */
+
 class HostAPICallTable {
 private:
     std::vector<std::string> calls;

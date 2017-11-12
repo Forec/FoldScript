@@ -9,6 +9,12 @@
 #include <unordered_map>
 #include <vector>
 
+/*
+ * StringTable: 字符串表，存储脚本中使用到的字符串常量
+ * @iMap: 字符串到字符串索引的映射
+ * @iTable: 字符串索引到字符串的映射
+ */
+
 class StringTable {
 private:
     std::unordered_map<std::string, unsigned int> iMap;

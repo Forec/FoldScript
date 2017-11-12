@@ -13,6 +13,33 @@
 #include "strtable.h"
 #include "lexer.h"
 
+/*
+ * Parser: 语法分析器
+ * @uiStackSize: 脚本定义的堆栈大小
+ * @uiGlobalDataSize: 脚本定义的全局数据大小
+ * @iInstrStreamSize: 脚本指令流大小（包含了隐式添加的 ret 指令和 exit 指令）
+ * @uiCurrentInstrIndex: 当前分析的指令行索引
+ * @uiCurrentFuncParamCount: 当前分析所在函数的参数数量
+ * @uiCurrentFuncLocalDataSize: 当前分析所在函数的局部数据大小
+ * @uiCurrentFuncIndex: 当前分析所在函数对应函数表中的索引
+ * @uiMainFuncIndex: 主函数索引
+ * @isFuncActive: 当前分析位置是否在函数中
+ *
+ * @functions: 函数表
+ * @symbols: 符号表（包括 Param 和 Var 定义的符号）
+ * @labels: 行标签表
+ * @instructions: 指令流
+ * @strings: 字符串表
+ * @hostapis: 系统调用表
+ * @execFilename: 导出 FEC 文件名
+ * @lexer: 词法分析器
+ *
+ * @initFromFile/String(): 从文件/字符串中导入脚本
+ * @assemble(): 汇编脚本
+ * @exportFEC(): 将汇编后的内容导出到 FEC 文件
+ * @statusToString(): 将汇编报告以字符串方式返回
+ */
+
 class Parser {
 private:
     unsigned long uiStackSize;
