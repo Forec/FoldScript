@@ -56,7 +56,7 @@ int main(int argc, char * argv[]) {
     std::cout << "汇编完成，正在导出可执行文件到 " << targetFilename << "..." << std::endl;
     parser->exportFEC();
 
-    std::cout << parser->statusToString();
+    std::cout << parser->status2string();
 
     delete parser;
 

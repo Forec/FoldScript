@@ -76,7 +76,7 @@ public:
     void reset();
     void assemble();
     void exportFEC();
-    std::string statusToString();
+    std::string status2string();
 
     // 错误处理
     void codeError(const std::string &err);

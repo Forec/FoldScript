@@ -394,7 +394,7 @@ void Parser::assemble() {
     }
 }
 
-std::string Parser::statusToString() {
+std::string Parser::status2string() {
     auto count = symbols->getSymbolCount();
     unsigned long uiVarCount = count.first, uiArrayCount = count.second, uiGlobalCount = symbols->getGlobalCount();
     std::ostringstream ss;
