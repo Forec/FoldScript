@@ -12,6 +12,8 @@
 /*
  * InstrLookupTable: 指令查找表
  * @iTable: 以指令助记符为键，映射到指令具体属性
+ * @init(): 将 FASM 内置指令添加至查找表
+ * @getInstrOpType(): 根据指令名和操作数索引确定操作数类型
  */
 
 class InstrLookupTable {

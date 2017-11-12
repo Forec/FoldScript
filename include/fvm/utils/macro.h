@@ -6,18 +6,12 @@
 #define FOLDSCRIPT_VM_MACRO_H
 
 /*
- * FEC 可执行文件格式
- */
-#define EXEC_FILE_EXT                 ".FEC"   // 可执行文件扩展名
-#define FEC_ID_STRING                 "FEC0"   // FEC 可执行文件标识符
-
-/*
  * 虚拟机加载状态
  */
-#define LOAD_OK                       0        // 成功加载 FEC 可执行文件
-#define LOAD_ERROR_FILE_IO            1        // 文件 I/O 操作失败（如文件不存在）
-#define LOAD_ERROR_INVALID_FEC        2        // 非法的 FEC 文件结构
-#define LOAD_ERROR_UNSUPPORTED_VERS   3        // FEC 文件版本不支持
+#define LOAD_OK                       0x00     // 成功加载 FEC 可执行文件
+#define LOAD_ERROR_FILE_IO            0x01     // 文件 I/O 操作失败（如文件不存在）
+#define LOAD_ERROR_INVALID_FEC        0x02     // 非法的 FEC 文件结构
+#define LOAD_ERROR_UNSUPPORTED_VERS   0x03     // FEC 文件版本不支持
 
 /*
  * 默认信息及限制
@@ -27,13 +21,21 @@
 
 
 
-
-
-
-
 /*
  * 以下部分与 fasm/utils/macro.h 中定义一致
  */
+
+/*
+ * FEC 可执行文件格式
+ */
+#define EXEC_FILE_EXT                 ".FEC"   // 可执行文件扩展名
+#define FEC_ID_STRING                 "FEC0"   // FEC 可执行文件标识符
+
+/*
+ * 版本信息
+ */
+#define VERSION_MAJOR                 0x00     // 主版本号
+#define VERSION_MINOR                 0x01     // 次版本号
 
 /*
  * FEC 操作码宏定义

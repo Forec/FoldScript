@@ -7,6 +7,13 @@
 
 #include <vector>
 
+/*
+ * InstrLoopup: 指令查找项
+ * @uiOpCode: 指令操作码
+ * @uiOpCount: 指令操作数数量
+ * @OpList: 指令操作数列表
+ */
+
 typedef unsigned char OpTypes;
 
 class InstrLookup {

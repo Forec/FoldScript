@@ -431,8 +431,7 @@ void Parser::exportFEC() {
     char tmp = isMainFunctionPresent;
     writer.write(&tmp, 1);                                                                      // 1B 是否存在主函数
     writer.write((char *)&uiMainFuncIndex, 4);                                                  // 4B 主函数索引
-    int realInstrStreamSize = iInstrStreamSize - (int)functions->getSize();
-    writer.write((char *)&realInstrStreamSize, 4);                                              // 4B 指令长度
+    writer.write((char *)&iInstrStreamSize, 4);                                                 // 4B 指令流长度
 
     for (unsigned int i = 0; i < iInstrStreamSize; ++i) {
         Instr instruction = instructions->getInstr(i);

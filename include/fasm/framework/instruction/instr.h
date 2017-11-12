@@ -10,9 +10,9 @@
 
 /*
  * Instr: 指令
- * @iOpCode: 操作码
- * @iOpCount: 操作数个数
- * @iOpList: 操作数列表
+ * @uiOpCode: 操作码
+ * @uiOpCount: 操作数个数
+ * @OpList: 操作数列表
  */
 
 struct Instr {
