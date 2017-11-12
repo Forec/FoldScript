@@ -5,25 +5,31 @@
 #include "functable.h"
 
 FuncTable::FuncTable() {
-    iTable.clear();
+    reset();
 }
 
 FuncTable::~FuncTable() {
-    iTable.clear();
+    reset();
 }
 
 void FuncTable::reset() {
     iTable.clear();
+    iNameList.clear();
 }
 
 unsigned long FuncTable::getSize() {
     return iTable.size();
 }
 
+std::vector<std::string> FuncTable::getNameList() {
+    return iNameList;
+}
+
 int FuncTable::addFunction(const std::string &name, int entryPoint) {
     if (iTable.find(name) != iTable.end())                              // 已存在同名函数，返回无效索引
         return -1;
     FuncNode func((int)iTable.size(), entryPoint);
+    iNameList.emplace_back(name);
     iTable.insert(std::make_pair(name, func));
     return func.getIndex();
 }

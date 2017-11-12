@@ -478,12 +478,38 @@ void Parser::exportFEC() {
 
     // 写字符串表
     unsigned long stringCount = strings->getSize();
-    writer.write((char *)&stringCount, sizeof(long));                                           // 4/8B long
+    writer.write((char *)&stringCount, sizeof(long));                                           // 4/8B 字符串表长度
     for (unsigned int i = 0; i < stringCount; ++i) {
         std::string currentStr = strings->getString(i);
         unsigned long strLength = currentStr.length();
         writer.write((char *)&strLength, sizeof(long));                                         // 4/8B long
         writer.write(currentStr.c_str(), currentStr.length());                                  // 4/8B long
+    }
+
+    // 写函数表
+    auto functionSize = (unsigned int)functions->getSize();
+    writer.write((char *)&functionSize, sizeof(unsigned int));                                  // 2/4B 函数表长度
+
+    std::vector<std::string> functionNames = functions->getNameList();
+    for (const auto name: functionNames) {
+        FuncNode function = functions->getFunction(name);
+        int entryPoint = function.getEntryPoint();
+        writer.write((char *)&entryPoint, sizeof(int));                                         // 2/4B 函数入口点
+        unsigned int paramCount = function.getParamCount();
+        writer.write((char *)&paramCount, sizeof(unsigned int));                                // 2/4B 函数参数数量
+        unsigned int localDataSize = function.getLocalDataSize();
+        writer.write((char *)&localDataSize, sizeof(unsigned int));                             // 2/4B 函数局部数据大小
+    }
+
+    // 写系统调用表
+    auto apiSize = (unsigned int)hostapis->getSize();
+    writer.write((char *)&apiSize, sizeof(unsigned int));                                       // 2/4B 系统调用表长度
+
+    for (unsigned int i = 0; i < apiSize; i++) {
+        std::string apiName = hostapis->getString(i);
+        auto apiLength = (unsigned int)apiName.length();
+        writer.write((char *)&apiLength, sizeof(unsigned int));                                 // 2/4B 系统调用名称长度
+        writer.write(apiName.c_str(), apiLength);                                               // 系统调用名，长度不定
     }
 
     writer.close();

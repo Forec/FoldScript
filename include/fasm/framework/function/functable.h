@@ -6,6 +6,7 @@
 #define FOLDSCRIPT_ASM_FUNCTABLE_H
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 #include "funcnode.h"
 
@@ -21,11 +22,13 @@
 class FuncTable {
 private:
     std::unordered_map<std::string, FuncNode> iTable;
+    std::vector<std::string> iNameList;
 public:
     FuncTable();
     ~FuncTable();
     void reset();
     unsigned long getSize();
+    std::vector<std::string> getNameList();
     int addFunction(const std::string & name, int entryPoint);
     void setFunction(const std::string & name, unsigned int paramCount, unsigned int localDataSize);
     FuncNode getFunction(const std::string & name);
