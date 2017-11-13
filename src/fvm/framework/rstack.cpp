@@ -17,7 +17,7 @@ void RuntimeStack::reset() {
     iFrameIndex = 0;
     iTop = 0;
     uiSize = 0;
-    exception = Value{0, 0, 0};
+    exception = Value{};
 }
 
 void RuntimeStack::setSize(unsigned int size) {

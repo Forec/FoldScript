@@ -27,8 +27,11 @@ struct Value {
     };
     std::string sStrLiteral;				    // 字符串
     int iOffsetIndex;
+
+    Value();
     int toInt();
     int toInstrIndex();
+    unsigned int toHostApiIndex();
     float toFloat();
     std::string toString();
 };

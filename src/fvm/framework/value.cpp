@@ -8,6 +8,13 @@
 #include "macro.h"
 #include "value.h"
 
+Value::Value() {
+    iType = OP_TYPE_NULL;
+    iIntLiteral = 0;
+    sStrLiteral = "";
+    iOffsetIndex = 0;
+}
+
 int Value::toInt() {
     switch (iType) {
         case OP_TYPE_INT:
@@ -56,4 +63,13 @@ int Value::toInstrIndex() {
     if (iType != OP_TYPE_INSTR_INDEX)
         return -1;
     return uiInstrIndex;
+}
+
+unsigned int Value::toHostApiIndex() {
+    switch (iType) {
+        case OP_TYPE_HOST_API_CALL_INDEX:
+            return uiHostAPICallIndex;
+        default:
+            return 0xFF;
+    }
 }

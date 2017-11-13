@@ -18,6 +18,6 @@ Instr::Instr(unsigned int opCode, unsigned int opCount, const std::vector<Value>
 
 Value Instr::getOp(unsigned int index) {
     if (index >= ValueList.size())
-        return Value{0, 0, 0};
+        return Value();
     return ValueList.at(index);
 }
