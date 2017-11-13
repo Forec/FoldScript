@@ -12,7 +12,7 @@
  * @uiEntryPoint: 函数入口地址
  * @uiParamCount: 函数参数数量
  * @uiLocalDataSize: 函数局部数据大小
- * @uiStackFrameSize: 函数堆栈大小
+ * @uiStackFrameSize: 函数堆栈大小 = 局部数据大小 + 参数大小 + 1（返回地址）
  */
 
 struct Func {

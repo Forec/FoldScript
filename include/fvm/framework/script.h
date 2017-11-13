@@ -57,6 +57,7 @@ private:
     Value null;
 
     void fit();
+    void init();
 
     Value &resolveOpRef(unsigned int uiOpIndex);
     Value resolveOp(unsigned int uiOpIndex);

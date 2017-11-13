@@ -6,6 +6,7 @@
 
 RuntimeStack::RuntimeStack() {
     reset();
+    uiSize = 0;
 }
 
 RuntimeStack::~RuntimeStack() {
@@ -16,7 +17,6 @@ void RuntimeStack::reset() {
     elems.clear();
     iFrameIndex = 0;
     iTop = 0;
-    uiSize = 0;
     exception = Value{};
 }
 
@@ -24,9 +24,14 @@ void RuntimeStack::setSize(unsigned int size) {
     uiSize = size;
 }
 
+void RuntimeStack::pushFrame(unsigned int size) {
+    iTop += size;
+    iFrameIndex = iTop;
+}
+
 void RuntimeStack::fit() {
     if (elems.size() < uiSize)
-        elems.resize(uiSize);
+        elems.resize(uiSize, Value());
 }
 
 unsigned int RuntimeStack::getSize() {

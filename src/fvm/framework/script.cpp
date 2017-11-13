@@ -18,7 +18,7 @@ Script::Script() {
     stack = new RuntimeStack();
     functions = new FuncTable();
     apis = new HostAPICallTable();
-    reset();
+    init();
 }
 
 Script::~Script() {
@@ -28,7 +28,7 @@ Script::~Script() {
     delete instructions;
 }
 
-void Script::reset() {
+void Script::init() {
     iExitCode = 0;
     uiStreamSize = 0;
     uiGlobalDataSize = 0;
@@ -44,6 +44,18 @@ void Script::reset() {
     stack->reset();
     functions->reset();
     apis->reset();
+}
+
+void Script::reset() {
+    if (isMainFuncPresent)
+        instructions->setCurrentIndex(functions->getFunction(uiMainFuncIndex).uiEntryPoint);
+
+    stack->reset();
+
+    isPaused = false;
+
+    stack->pushFrame(uiGlobalDataSize);
+    stack->pushFrame(functions->getFunction(uiMainFuncIndex).uiStackFrameSize + 1);
 }
 
 void Script::fit() {

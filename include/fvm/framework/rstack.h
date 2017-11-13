@@ -30,6 +30,7 @@ public:
     void reset();
     void setSize(unsigned int size);
     void fit();
+    void pushFrame(unsigned int size);
     unsigned int getSize();
     int resolveIndex(int iIndex);
     Value getValue(int iIndex);
