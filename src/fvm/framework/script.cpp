@@ -6,9 +6,9 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
-#include <cstdlib>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 #include "macro.h"
 #include "utils.h"
 #include "script.h"
@@ -29,6 +29,7 @@ Script::~Script() {
 }
 
 void Script::reset() {
+    iExitCode = 0;
     uiStreamSize = 0;
     uiGlobalDataSize = 0;
     ulPauseEndStamp = 0;
@@ -186,9 +187,9 @@ bool Script::loadCode() {
 
     for (unsigned long ulStringIndex = 0; ulStringIndex < ulStringTableSize; ++ulStringIndex) {
         unsigned long ulStringLength = 0;
-        reader.read((char *)&ulStringLength, sizeof(unsigned long));
+        reader.read((char *)&ulStringLength, sizeof(unsigned long));     // 字符串长度：4/8B
         auto buffer = new char[ulStringLength + 1];
-        reader.read(buffer, ulStringLength);
+        reader.read(buffer, ulStringLength);                             // 字符串：长度不定
         buffer[ulStringLength] = '\0';
 
         auto instrIndex = string2InstrIndex.find((int)ulStringIndex);    // 根据字符串索引获取引用了该字符串的指令索引
@@ -231,7 +232,7 @@ bool Script::loadCode() {
         unsigned int callLength = 0;
         reader.read((char *)&callLength, sizeof(unsigned int));          // 系统调用名长度：2/4B
         auto buffer = new char[callLength + 1];
-        reader.read(buffer, callLength);
+        reader.read(buffer, callLength);                                 // 系统调用
         buffer[callLength] = '\0';
         apis->append(buffer);
         delete []buffer;
@@ -591,12 +592,21 @@ void Script::run() {
                 break;
             }
             case INSTR_CALLHOST: {
+                // TODO: 下版本实现系统调用
+                std::cout << "系统调用 \"" << resolveOp(0).toString() << "\"\n";
                 break;
             }
             case INSTR_PAUSE: {
+                if (isPaused)
+                    break;
+                int pauseDuration = resolveOp(0).toInt();
+                ulPauseEndStamp = getCurrentTimestamp() + pauseDuration;
+                isPaused = true;
                 break;
             }
             case INSTR_EXIT: {
+                iExitCode = resolveOp(0).toInt();
+                exitExecution = true;
                 break;
             }
             default:
@@ -657,5 +667,23 @@ int Script::resolveOpStackIndex(unsigned int uiOpIndex) {
         }
         default:
             return 0;
+    }
+}
+
+std::string Script::formatOp(unsigned int uiOpIndex) {
+    Value opValue = instructions->getCurrentInstr().getOp(uiOpIndex);
+    switch (opValue.iType) {
+        case OP_TYPE_NULL:
+            return "NULL";
+        case OP_TYPE_INT:
+        case OP_TYPE_FLOAT:
+        case OP_TYPE_INSTR_INDEX:
+            return std::to_string(opValue.iIntLiteral);
+        case OP_TYPE_STRING:
+            return "\"" + opValue.sStrLiteral + "\"";
+        case OP_TYPE_HOST_API_CALL_INDEX:
+            return apis->getCall(opValue.toHostApiIndex());
+        default:
+            return "NOP";
     }
 }

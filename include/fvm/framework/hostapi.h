@@ -21,6 +21,7 @@ public:
     void reset();
     void append(const std::string& name);
     unsigned long getSize();
+    std::string getCall(unsigned int uiCallIndex);
 };
 
 #endif //FOLDSCRIPT_VM_HOSTAPI_H

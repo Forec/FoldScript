@@ -23,3 +23,9 @@ void HostAPICallTable::append(const std::string &name) {
 unsigned long HostAPICallTable::getSize() {
     return calls.size();
 }
+
+std::string HostAPICallTable::getCall(unsigned int uiCallIndex) {
+    if (uiCallIndex >= calls.size())
+        return "NOP";
+    return calls.at(uiCallIndex);
+}

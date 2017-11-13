@@ -44,6 +44,8 @@ private:
     unsigned int uiGlobalDataSize;
     unsigned long ulPauseEndStamp;
 
+    int iExitCode;
+
     std::string executableFile;
 
     Value _RetVal;
@@ -58,6 +60,7 @@ private:
 
     Value &resolveOpRef(unsigned int uiOpIndex);
     Value resolveOp(unsigned int uiOpIndex);
+    std::string formatOp(unsigned int uiOpIndex);
     int resolveOpType(unsigned int uiOpIndex);
     int resolveOpStackIndex(unsigned int uiOpIndex);
 
