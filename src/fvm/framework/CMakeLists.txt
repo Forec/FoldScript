@@ -5,6 +5,7 @@ set(
         instruction/instable.cpp
         functable.cpp
         hostapi.cpp
+        value.cpp
         script.cpp
 )
 

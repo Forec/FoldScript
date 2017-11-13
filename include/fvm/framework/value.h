@@ -25,6 +25,11 @@ struct Value {
         unsigned int uiReg;                     // 寄存器编号
     };
     int iOffsetIndex;
+    Value clone();
+    Value &operator=(const Value &rhs);
+    int toInt();
+    float toFloat();
+    char * toString();
 };
 
 #endif //FOLDSCRIPT_VM_VALUE_H
