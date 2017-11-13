@@ -50,16 +50,23 @@ private:
     FuncTable * functions;
     HostAPICallTable * apis;
 
+    void fit();
+
+    Value getStackValue(int stackIndex);
+    Value resolveOp(unsigned int uiOpIndex);
+    int resolveOpType(unsigned int uiOpIndex);
+    int resolveOpStackIndex(unsigned int uiOpIndex);
+
 public:
     Script();
     ~Script();
     void reset();
-    void fit();
     void setExecutableFile(const std::string & path);
     bool isValid();
     Status loadHeader();
     std::string status2string();
     bool loadCode();
+    void run();
 };
 
 #endif //FOLDSCRIPT_VM_SCRIPT_H

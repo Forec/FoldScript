@@ -9,6 +9,7 @@
 #include <sstream>
 #include <fstream>
 #include "macro.h"
+#include "utils.h"
 #include "script.h"
 
 Script::Script() {
@@ -252,4 +253,75 @@ std::string Script::status2string() {
        << (isMainFuncPresent ? ", 主函数下标为 " + std::to_string(uiMainFuncIndex) : "") << std::endl;
     ss.flush();
     return ss.str();
+}
+
+void Script::run() {
+    bool exitExecution = false;
+    while (true) {
+        if (isPaused) {                                                  // 当前脚本处于等待状态
+            if (getCurrentTimestamp() >= ulPauseEndStamp)                // 检查是否可以激活 TODO：从忙等改为中断
+                isPaused = false;
+            else
+                continue;
+        }
+        unsigned int currentInstrIndex = instructions->getCurrentIndex();
+        Instr currentInstr = instructions->getCurrentInstr();
+
+        switch (currentInstr.uiOpCode) {
+            case INSTR_MOV:
+            case INSTR_ADD:
+            case INSTR_SUB:
+            case INSTR_MUL:
+            case INSTR_DIV:
+            case INSTR_MOD:
+            case INSTR_EXP:
+            case INSTR_AND:
+            case INSTR_OR:
+            case INSTR_XOR:
+            case INSTR_SHL:
+            case INSTR_SHR: {
+                Value dest = currentInstr.ValueList[0];
+            }
+        }
+    }
+}
+
+Value Script::resolveOp(unsigned int uiOpIndex) {
+    Instr currentInstr = instructions->getCurrentInstr();
+    Value opValue = currentInstr.getOp(uiOpIndex);
+    switch (opValue.iType) {
+        case OP_TYPE_ABS_STACK_INDEX:
+        case OP_TYPE_REL_STACK_INDEX: {
+            int iAbsIndex = resolveOpStackIndex(uiOpIndex);
+            return getStackValue(iAbsIndex);
+        }
+        case OP_TYPE_REG:
+            return _RetVal;
+        default:
+            return opValue;
+    }
+}
+
+int Script::resolveOpType(unsigned int uiOpIndex) {
+    return resolveOp(uiOpIndex).iType;
+}
+
+int Script::resolveOpStackIndex(unsigned int uiOpIndex) {
+    Instr currentInstr = instructions->getCurrentInstr();
+    Value opValue = currentInstr.getOp(uiOpIndex);
+    switch (opValue.iType) {
+        case OP_TYPE_ABS_STACK_INDEX:
+            return opValue.iStackIndex;
+        case OP_TYPE_REL_STACK_INDEX: {
+            Value stackValue = getStackValue(opValue.iOffsetIndex);
+            return opValue.iStackIndex + stackValue.iIntLiteral;
+        }
+        default:
+            return 0;
+    }
+}
+
+// TODO
+Value Script::getStackValue(int stackIndex) {
+    return Value{0, 0, 0};
 }
