@@ -26,6 +26,7 @@ struct Value {
     };
     int iOffsetIndex;
     int toInt();
+    int toInstrIndex();
     float toFloat();
     std::string toString();
 };

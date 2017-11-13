@@ -32,6 +32,8 @@ public:
     Instr getInstr(unsigned long index);
     Instr getCurrentInstr();
     int getOpType(unsigned int uiOpIndex);
+    void setCurrentIndex(unsigned int index);
+    void incCurrentIndex();
     void setInstr(unsigned long index, const Instr &instr);
     void setOpCode(unsigned long index, unsigned int opCode);
     void setOpCount(unsigned long index, unsigned int opCount);

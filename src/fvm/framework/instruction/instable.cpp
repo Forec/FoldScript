@@ -74,3 +74,11 @@ void InstrTable::setInstr(unsigned long index, const Instr &instr) {
         return;
     instrStream[index] = instr;
 }
+
+void InstrTable::setCurrentIndex(unsigned int index) {
+    uiCurrentInstrIndex = index;
+}
+
+void InstrTable::incCurrentIndex() {
+    ++uiCurrentInstrIndex;
+}

@@ -282,11 +282,331 @@ void Script::run() {
             case INSTR_XOR:
             case INSTR_SHL:
             case INSTR_SHR: {
-                Value dest = resolveOp(0);
+                Value &dest = resolveOpRef(0);
                 Value source = resolveOp(1);
+
+                switch (currentInstr.uiOpCode) {
+                    case INSTR_MOV:
+                        dest = source;
+                        break;
+                    case INSTR_ADD:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral += source.toInt();
+                        else if (dest.iType == OP_TYPE_FLOAT)
+                            dest.fFloatLiteral += source.toFloat();
+                        else
+                            exitOnInvalidOp();
+                        break;
+                    case INSTR_SUB:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral -= source.toInt();
+                        else if (dest.iType == OP_TYPE_FLOAT)
+                            dest.fFloatLiteral -= source.toFloat();
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_MUL:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral *= source.toInt();
+                        else if (dest.iType == OP_TYPE_FLOAT)
+                            dest.fFloatLiteral *= source.toFloat();
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_DIV: {
+                        if (dest.iType == OP_TYPE_INT) {
+                            int divider = source.toInt();
+                            if (divider == 0)
+                                exitOnError("除 0 异常");
+                            dest.iIntLiteral /= divider;
+                        } else if (dest.iType == OP_TYPE_FLOAT) {
+                            float divider = source.toFloat();
+                            if (divider == 0.0)
+                                exitOnError("除 0 异常");
+                            dest.fFloatLiteral /= divider;
+                        } else exitOnInvalidOp();
+                        break;
+                    }
+                    case INSTR_MOD: {
+                        int moder = source.toInt();
+                        if (moder == 0)
+                            exitOnError("模 0 异常");
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral %= moder;
+                        else exitOnInvalidOp();
+                        break;
+                    }
+                    case INSTR_AND:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral &= source.toInt();
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_OR:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral |= source.toInt();
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_XOR:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral ^= source.toInt();
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_SHL:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral <<= source.toInt();
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_SHR:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral >>= source.toInt();
+                        else exitOnInvalidOp();
+                        break;
+                    default:
+                        break;
+                }
+                break;
             }
+
+            case INSTR_NEG:
+            case INSTR_NOT:
+            case INSTR_INC:
+            case INSTR_DEC: {
+                Value &dest = resolveOpRef(0);
+                switch (currentInstr.uiOpCode) {
+                    case INSTR_NEG:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral = -dest.iIntLiteral;
+                        else if (dest.iType == OP_TYPE_FLOAT)
+                            dest.fFloatLiteral = -dest.fFloatLiteral;
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_NOT:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral = ~dest.iIntLiteral;
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_INC:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral++;
+                        else if (dest.iType == OP_TYPE_FLOAT)
+                            dest.fFloatLiteral++;
+                        else exitOnInvalidOp();
+                        break;
+                    case INSTR_DEC:
+                        if (dest.iType == OP_TYPE_INT)
+                            dest.iIntLiteral--;
+                        else if (dest.iType == OP_TYPE_FLOAT)
+                            dest.fFloatLiteral--;
+                        else exitOnInvalidOp();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+            case INSTR_CONCAT: {
+                Value &dest = resolveOpRef(0);
+                std::string append = resolveOp(1).toString();
+                if (dest.iType != OP_TYPE_STRING)
+                    exitOnInvalidOp();
+                dest.sStrLiteral += append;
+                break;
+            }
+            case INSTR_GETCHAR: {
+                Value &dest = resolveOpRef(0);
+                Value source = resolveOp(1);
+                int index = resolveOp(2).toInt();
+                std::string str = source.toString();
+                dest.sStrLiteral = str.substr((unsigned long)index, 1);
+                break;
+            }
+            case INSTR_SETCHAR: {
+                Value &dest = resolveOpRef(0);
+                if (dest.iType != OP_TYPE_STRING)
+                    exitOnInvalidOp();
+                int index = resolveOp(1).toInt();
+                std::string str = resolveOp(2).toString();
+                if (dest.sStrLiteral.length() < index || str.empty())
+                    break;
+                dest.sStrLiteral[index] = str[0];
+                break;
+            }
+            case INSTR_JMP: {
+                int iTargetIndex = resolveOp(0).toInstrIndex();
+                if (iTargetIndex == -1)
+                    exitOnInvalidOp();
+                instructions->setCurrentIndex((unsigned int)iTargetIndex);
+                break;
+            }
+            case INSTR_JE:
+            case INSTR_JNE:
+            case INSTR_JG:
+            case INSTR_JL:
+            case INSTR_JGE:
+            case INSTR_JLE: {
+                Value op0 = resolveOp(0);
+                Value op1 = resolveOp(1);
+                int iTargetIndex = resolveOp(2).toInstrIndex();
+                if (iTargetIndex == -1)
+                    exitOnInvalidOp();
+
+                bool jump = false;
+
+                switch (currentInstr.uiOpCode) {
+                    case INSTR_JE: {
+                        switch (op0.iType) {
+                            case OP_TYPE_INT:
+                                if (op0.toInt() == op1.toInt())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_FLOAT:
+                                if (op0.toFloat() == op1.toFloat())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_STRING:
+                                if (op0.toString() == op1.toString())
+                                    jump = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    }
+                    case INSTR_JNE: {
+                        switch (op0.iType) {
+                            case OP_TYPE_INT:
+                                if (op0.toInt() != op1.toInt())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_FLOAT:
+                                if (op0.toFloat() != op1.toFloat())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_STRING:
+                                if (op0.toString() != op1.toString())
+                                    jump = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    }
+                    case INSTR_JG: {
+                        switch (op0.iType) {
+                            case OP_TYPE_INT:
+                                if (op0.toInt() > op1.toInt())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_FLOAT:
+                                if (op0.toFloat() > op1.toFloat())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_STRING:
+                                if (op0.toString() > op1.toString())
+                                    jump = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    }
+                    case INSTR_JL: {
+                        switch (op0.iType) {
+                            case OP_TYPE_INT:
+                                if (op0.toInt() < op1.toInt())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_FLOAT:
+                                if (op0.toFloat() < op1.toFloat())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_STRING:
+                                if (op0.toString() < op1.toString())
+                                    jump = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    }
+                    case INSTR_JGE: {
+                        switch (op0.iType) {
+                            case OP_TYPE_INT:
+                                if (op0.toInt() >= op1.toInt())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_FLOAT:
+                                if (op0.toFloat() >= op1.toFloat())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_STRING:
+                                if (op0.toString() >= op1.toString())
+                                    jump = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    }
+                    case INSTR_JLE: {
+                        switch (op0.iType) {
+                            case OP_TYPE_INT:
+                                if (op0.toInt() <= op1.toInt())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_FLOAT:
+                                if (op0.toFloat() <= op1.toFloat())
+                                    jump = true;
+                                break;
+                            case OP_TYPE_STRING:
+                                if (op0.toString() <= op1.toString())
+                                    jump = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
+
+                if (jump)
+                    instructions->setCurrentIndex((unsigned int)iTargetIndex);
+                break;
+            }
+            case INSTR_PUSH: {
+                Value source = resolveOp(0);
+                if (!stack->push(source))
+                    exitOnError("栈溢出!");
+                break;
+            }
+            case INSTR_POP: {
+                resolveOpRef(0) = stack->pop();
+                break;
+            }
+            case INSTR_CALL: {
+                break;
+            }
+            case INSTR_RET: {
+                break;
+            }
+            case INSTR_CALLHOST: {
+                break;
+            }
+            case INSTR_PAUSE: {
+                break;
+            }
+            case INSTR_EXIT: {
+                break;
+            }
+            default:
+                break;
         }
-        break; // TODO: 此函数完成后删除此行
+
+        if (currentInstrIndex == instructions->getCurrentIndex())
+            instructions->incCurrentIndex();
+
+        if (exitExecution)
+            break;
     }
 }
 

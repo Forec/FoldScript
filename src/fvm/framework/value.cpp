@@ -51,3 +51,9 @@ std::string Value::toString() {
     }
     return strCoerce;
 }
+
+int Value::toInstrIndex() {
+    if (iType != OP_TYPE_INSTR_INDEX)
+        return -1;
+    return uiInstrIndex;
+}
