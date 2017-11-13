@@ -201,8 +201,7 @@ bool Script::loadCode() {
             Instr matchedInstr = instructions->getInstr(index);
             for (auto& iterator : matchedInstr.ValueList) {
                 if (iterator.iType == OP_TYPE_STRING && iterator.iIntLiteral == (int)ulStringIndex) {
-                    iterator.sStrLiteral = new char[ulStringLength + 1];
-                    strcpy(iterator.sStrLiteral, buffer);
+                    iterator.sStrLiteral = std::string(buffer);
                 }
             }
         }
@@ -283,9 +282,11 @@ void Script::run() {
             case INSTR_XOR:
             case INSTR_SHL:
             case INSTR_SHR: {
-                Value dest = currentInstr.ValueList[0];
+                Value dest = resolveOp(0);
+                Value source = resolveOp(1);
             }
         }
+        break; // TODO: 此函数完成后删除此行
     }
 }
 
@@ -302,6 +303,20 @@ Value Script::resolveOp(unsigned int uiOpIndex) {
             return _RetVal;
         default:
             return opValue;
+    }
+}
+
+Value & Script::resolveOpRef(unsigned int uiOpIndex) {
+    switch (instructions->getOpType(uiOpIndex)) {
+        case OP_TYPE_REG:
+            return _RetVal;
+        case OP_TYPE_REL_STACK_INDEX:
+        case OP_TYPE_ABS_STACK_INDEX: {
+            int stackIndex = resolveOpStackIndex(uiOpIndex);
+            return stack->getValueRef(stack->resolveIndex(stackIndex));
+        }
+        default:
+            return null;
     }
 }
 

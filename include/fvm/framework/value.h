@@ -17,7 +17,7 @@ struct Value {
     union {
         int iIntLiteral;                        // 整型
         float fFloatLiteral;                    // 浮点型
-        char * sStrLiteral;				        // 字符串指针
+        std::string sStrLiteral;				// 字符串
         int iStackIndex;                        // 堆栈索引
         int iFuncIndex;                         // 函数索引
         int uiInstrIndex;                       // 指令索引
@@ -25,11 +25,9 @@ struct Value {
         unsigned int uiReg;                     // 寄存器编号
     };
     int iOffsetIndex;
-    Value clone();
-    Value &operator=(const Value &rhs);
     int toInt();
     float toFloat();
-    char * toString();
+    std::string toString();
 };
 
 #endif //FOLDSCRIPT_VM_VALUE_H

@@ -20,6 +20,7 @@
 class RuntimeStack {
 private:
     std::vector<Value> elems;
+    Value exception;
     unsigned int iTop;
     unsigned int uiSize;
     int iFrameIndex;
@@ -32,6 +33,7 @@ public:
     unsigned int getSize();
     int resolveIndex(int iIndex);
     Value getValue(int iIndex);
+    Value &getValueRef(int iIndex);
     bool setValue(int iIndex, Value val);
     bool push(Value val);
     Value pop();

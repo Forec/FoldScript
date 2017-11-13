@@ -24,6 +24,8 @@
  * @functions: 脚本函数表
  * @apis: 系统调用表
  *
+ * @null: 黑洞，对违例值引用的操作都会写入 null
+ *
  * @fit(): 令各表项根据脚本元信息重新分配内存，动态加载程序
  * @reset(): 脚本重置为空
  * @load(): 从指定文件加载脚本
@@ -50,8 +52,11 @@ private:
     FuncTable * functions;
     HostAPICallTable * apis;
 
+    Value null;
+
     void fit();
 
+    Value &resolveOpRef(unsigned int uiOpIndex);
     Value resolveOp(unsigned int uiOpIndex);
     int resolveOpType(unsigned int uiOpIndex);
     int resolveOpStackIndex(unsigned int uiOpIndex);

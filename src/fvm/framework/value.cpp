@@ -8,27 +8,6 @@
 #include "macro.h"
 #include "value.h"
 
-Value Value::clone() {
-    Value copy = *this;
-    if (iType == OP_TYPE_STRING) {
-        copy.sStrLiteral = new char[strlen(this->sStrLiteral)+1];
-        strcpy(copy.sStrLiteral, this->sStrLiteral);
-    }
-    return copy;
-}
-
-Value& Value::operator=(const Value &rhs) {
-    if (this == &rhs)
-        return *this;
-    if (this->iType == OP_TYPE_STRING)
-        delete []this->sStrLiteral;
-    *this = rhs;
-    if (rhs.iType == OP_TYPE_STRING) {
-        this->sStrLiteral = new char[strlen(rhs.sStrLiteral) + 1];
-        strcpy(this->sStrLiteral, rhs.sStrLiteral);
-    }
-}
-
 int Value::toInt() {
     switch (iType) {
         case OP_TYPE_INT:
@@ -55,8 +34,7 @@ float Value::toFloat() {
     }
 }
 
-char * Value::toString() {
-    char *pStr = nullptr;
+std::string Value::toString() {
     std::string strCoerce;
     switch (iType) {
         case OP_TYPE_INT:
@@ -66,12 +44,10 @@ char * Value::toString() {
             strCoerce = std::to_string(fFloatLiteral);
             break;
         case OP_TYPE_STRING:
-            strCoerce = std::string(sStrLiteral);
+            strCoerce = sStrLiteral;
             break;
         default:
             strCoerce = "";
     }
-    pStr = new char[strCoerce.length() + 1];
-    strcpy(pStr, strCoerce.c_str());
-    return pStr;
+    return strCoerce;
 }

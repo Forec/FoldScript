@@ -51,6 +51,10 @@ unsigned long InstrTable::getSize() {
     return uiSize;
 }
 
+int InstrTable::getOpType(unsigned int uiOpIndex) {
+    return getCurrentInstr().getOp(uiOpIndex).iType;
+}
+
 void InstrTable::addInstr(const Instr &ins) {
     instrStream.emplace_back(ins);
 }

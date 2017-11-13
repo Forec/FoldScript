@@ -17,6 +17,7 @@ void RuntimeStack::reset() {
     iFrameIndex = 0;
     iTop = 0;
     uiSize = 0;
+    exception = Value{0, 0, 0};
 }
 
 void RuntimeStack::setSize(unsigned int size) {
@@ -36,8 +37,16 @@ int RuntimeStack::resolveIndex(int iIndex) {
     return iIndex < 0 ? iIndex + iFrameIndex : iIndex;
 }
 
+Value &RuntimeStack::getValueRef(int iIndex) {
+    int index = resolveIndex(iIndex);
+    if (index < 0 || index > uiSize)
+        return exception;
+    fit();
+    return elems.at((unsigned long)index);
+}
+
 Value RuntimeStack::getValue(int iIndex) {
-    return elems[resolveIndex(iIndex)];
+    return getValueRef(iIndex);
 }
 
 bool RuntimeStack::setValue(int iIndex, Value val) {
@@ -59,6 +68,6 @@ bool RuntimeStack::push(Value val) {
 
 Value RuntimeStack::pop() {
     if (iTop <= 0)
-        return Value{0, 0, 0};
+        return exception;
     return elems[--iTop];
 }
