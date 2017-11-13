@@ -201,10 +201,13 @@ bool Script::loadCode() {
             Instr matchedInstr = instructions->getInstr(index);
             for (auto& iterator : matchedInstr.ValueList) {
                 if (iterator.iType == OP_TYPE_STRING && iterator.iIntLiteral == (int)ulStringIndex) {
-                    iterator.sStrLiteral = buffer;
+                    iterator.sStrLiteral = new char[ulStringLength + 1];
+                    strcpy(iterator.sStrLiteral, buffer);
                 }
             }
         }
+
+        delete []buffer;
     }
 
     // 读取函数表
@@ -293,7 +296,7 @@ Value Script::resolveOp(unsigned int uiOpIndex) {
         case OP_TYPE_ABS_STACK_INDEX:
         case OP_TYPE_REL_STACK_INDEX: {
             int iAbsIndex = resolveOpStackIndex(uiOpIndex);
-            return getStackValue(iAbsIndex);
+            return stack->getValue(iAbsIndex);
         }
         case OP_TYPE_REG:
             return _RetVal;
@@ -313,15 +316,10 @@ int Script::resolveOpStackIndex(unsigned int uiOpIndex) {
         case OP_TYPE_ABS_STACK_INDEX:
             return opValue.iStackIndex;
         case OP_TYPE_REL_STACK_INDEX: {
-            Value stackValue = getStackValue(opValue.iOffsetIndex);
+            Value stackValue = stack->getValue(opValue.iOffsetIndex);
             return opValue.iStackIndex + stackValue.iIntLiteral;
         }
         default:
             return 0;
     }
-}
-
-// TODO
-Value Script::getStackValue(int stackIndex) {
-    return Value{0, 0, 0};
 }

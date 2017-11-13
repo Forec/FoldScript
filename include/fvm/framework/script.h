@@ -52,7 +52,6 @@ private:
 
     void fit();
 
-    Value getStackValue(int stackIndex);
     Value resolveOp(unsigned int uiOpIndex);
     int resolveOpType(unsigned int uiOpIndex);
     int resolveOpStackIndex(unsigned int uiOpIndex);
