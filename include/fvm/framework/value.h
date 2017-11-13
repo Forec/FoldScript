@@ -5,6 +5,8 @@
 #ifndef FOLDSCRIPT_VM_VALUE_H
 #define FOLDSCRIPT_VM_VALUE_H
 
+#include <string>
+
 /*
 * Value: 运行时值
 * @iType: 值类型
@@ -17,13 +19,13 @@ struct Value {
     union {
         int iIntLiteral;                        // 整型
         float fFloatLiteral;                    // 浮点型
-        std::string sStrLiteral;				// 字符串
         int iStackIndex;                        // 堆栈索引
         int iFuncIndex;                         // 函数索引
         int uiInstrIndex;                       // 指令索引
         unsigned int uiHostAPICallIndex;        // 系统调用索引
         unsigned int uiReg;                     // 寄存器编号
     };
+    std::string sStrLiteral;				    // 字符串
     int iOffsetIndex;
     int toInt();
     int toInstrIndex();

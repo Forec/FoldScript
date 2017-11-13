@@ -15,7 +15,7 @@ int Value::toInt() {
         case OP_TYPE_FLOAT:
             return (int)fFloatLiteral;
         case OP_TYPE_STRING:
-            return (int)strtol(sStrLiteral, nullptr, 10);
+            return (int)strtol(sStrLiteral.c_str(), nullptr, 10);
         default:
             return 0;
     }
@@ -28,7 +28,7 @@ float Value::toFloat() {
         case OP_TYPE_FLOAT:
             return fFloatLiteral;
         case OP_TYPE_STRING:
-            return strtof(sStrLiteral, nullptr);
+            return strtof(sStrLiteral.c_str(), nullptr);
         default:
             return 0.0;
     }
