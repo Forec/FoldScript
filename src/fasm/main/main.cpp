@@ -5,8 +5,8 @@
 #include "macro.h"
 #include "parser.h"
 
-DEFINE_string(i, "", "Fold-Script-Assemble source file to be assembled");
-DEFINE_string(o, "a.fec", "Output filename after assembled.");
+DEFINE_string(i, "", "待汇编源文件");
+DEFINE_string(o, "a.fec", "汇编结果输出路径");
 
 void logo() {
     std::cout << "Fold-Script 汇编器    当前版本: " << VERSION_MAJOR
@@ -14,12 +14,13 @@ void logo() {
               << "GitHub: https://github.com/forec/FoldScript" << std::endl;
 }
 
-void usage() {
-    std::cout << "帮助:\t FASM [-i] Source.FASM [-o Executable.FEC]" << std::endl;
-}
+std::string usageMsg = "帮助:\t FASM [-i] Source.FASM [-o Executable.FEC]";
 
 int main(int argc, char * argv[]) {
     gflags::ParseCommandLineFlags(&argc, &argv, true);
+
+    gflags::SetUsageMessage(usageMsg);
+    gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR));
 
     logo();
 
@@ -28,7 +29,7 @@ int main(int argc, char * argv[]) {
     if (argc > 1 && FLAGS_i.empty()) {
         sourceFilename = argv[1];
     } else if (FLAGS_i == "") {
-        usage();
+        std::cout << usageMsg << std::endl;
         return 0;
     }
 
