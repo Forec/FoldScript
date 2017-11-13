@@ -73,3 +73,32 @@ unsigned int Value::toHostApiIndex() {
             return 0xFF;
     }
 }
+
+bool Value::operator==(const Value &rhs) const {
+    if (this->iType != rhs.iType)
+        return false;
+    switch (this->iType) {
+        case OP_TYPE_NULL:
+            return true;
+        case OP_TYPE_INT:
+            return this->iIntLiteral == rhs.iIntLiteral;
+        case OP_TYPE_FLOAT:
+            return this->fFloatLiteral == rhs.fFloatLiteral;
+        case OP_TYPE_STRING:
+            return this->sStrLiteral == rhs.sStrLiteral;
+        case OP_TYPE_HOST_API_CALL_INDEX:
+            return this->uiHostAPICallIndex == rhs.uiHostAPICallIndex;
+        case OP_TYPE_ABS_STACK_INDEX:
+            return this->iStackIndex == rhs.iStackIndex;
+        case OP_TYPE_REL_STACK_INDEX:
+            return this->iStackIndex == rhs.iStackIndex && this->iOffsetIndex == rhs.iOffsetIndex;
+        case OP_TYPE_REG:
+            return this->uiReg == rhs.uiReg;
+        case OP_TYPE_INSTR_INDEX:
+            return this->uiInstrIndex == rhs.uiInstrIndex;
+        case OP_TYPE_FUNC_INDEX:
+            return this->iFuncIndex == rhs.iFuncIndex;
+        default:
+            return false;
+    }
+}

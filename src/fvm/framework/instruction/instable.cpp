@@ -29,20 +29,24 @@ unsigned int InstrTable::getCurrentIndex() {
 }
 
 void InstrTable::fit() {
-    instrStream.resize(uiSize, Instr(0, 0));
+    if (instrStream.size() < uiSize)
+        instrStream.resize(uiSize, Instr(0, 0));
 }
 
 void InstrTable::setOpCode(unsigned long index, unsigned int opCode) {
+    fit();
     if (index < instrStream.size())
         instrStream[index].uiOpCode = opCode;
 }
 
 void InstrTable::setOpCount(unsigned long index, unsigned int opCount) {
+    fit();
     if (index < instrStream.size())
         instrStream[index].uiOpCount = opCount;
 }
 
 void InstrTable::setValueList(unsigned long index, const std::vector<Value> &valueList) {
+    fit();
     if (index < instrStream.size())
         instrStream[index].ValueList = valueList;
 }
@@ -60,6 +64,7 @@ void InstrTable::addInstr(const Instr &ins) {
 }
 
 Instr InstrTable::getInstr(unsigned long index) {
+    fit();
     if (index >= instrStream.size())
         return Instr(0);
     return instrStream.at(index);
@@ -70,6 +75,7 @@ Instr InstrTable::getCurrentInstr() {
 }
 
 void InstrTable::setInstr(unsigned long index, const Instr &instr) {
+    fit();
     if (index >= instrStream.size())
         return;
     instrStream[index] = instr;

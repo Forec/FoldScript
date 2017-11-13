@@ -4,6 +4,13 @@
 //
 
 #include "instr.h"
+#include "macro.h"
+
+Instr::Instr() {
+    uiOpCode = INSTR_NOP;
+    uiOpCount = 0;
+    ValueList.clear();
+}
 
 Instr::Instr(unsigned int opCode, unsigned int opCount) {
     uiOpCode = opCode;

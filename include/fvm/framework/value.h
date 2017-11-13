@@ -34,6 +34,7 @@ struct Value {
     unsigned int toHostApiIndex();
     float toFloat();
     std::string toString();
+    bool operator==(const Value &rhs) const;
 };
 
 #endif //FOLDSCRIPT_VM_VALUE_H

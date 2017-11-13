@@ -20,6 +20,7 @@ struct Instr {
     unsigned int uiOpCode;
     unsigned int uiOpCount;
     std::vector<Value> ValueList;
+    Instr();
     explicit Instr(unsigned int opCode, unsigned int opCount = 0);
     Instr(unsigned int opCode, unsigned int opCount, const std::vector<Value> &valueList);
     Value getOp(unsigned int index);
