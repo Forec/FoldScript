@@ -1,6 +1,6 @@
 //
 // Created by 王耀 on 2017/11/12.
-// 此文件同步自 fasm/framework/instruction/instable.cpp
+// 此文件部分同步自 fasm/framework/instruction/instable.cpp
 //
 
 #include "instable.h"
@@ -16,10 +16,16 @@ InstrTable::~InstrTable() {
 
 void InstrTable::reset() {
     instrStream.clear();
+    uiSize = 0;
+    uiCurrentInstrIndex = 0;
 }
 
 void InstrTable::setSize(unsigned int size) {
     uiSize = size;
+}
+
+unsigned int InstrTable::getCurrentIndex() {
+    return uiCurrentInstrIndex;
 }
 
 void InstrTable::fit() {
@@ -53,6 +59,10 @@ Instr InstrTable::getInstr(unsigned long index) {
     if (index >= instrStream.size())
         return Instr(0);
     return instrStream.at(index);
+}
+
+Instr InstrTable::getCurrentInstr() {
+    return getInstr(getCurrentIndex());
 }
 
 void InstrTable::setInstr(unsigned long index, const Instr &instr) {

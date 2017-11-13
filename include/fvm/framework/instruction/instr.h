@@ -1,6 +1,6 @@
 //
 // Created by 王耀 on 2017/11/12.
-// 此文件同步自 fasm/framework/instruction/instr.h
+// 此文件部分同步自 fasm/framework/instruction/instr.h
 //
 
 #ifndef FOLDSCRIPT_VM_INSTR_H
@@ -22,6 +22,7 @@ struct Instr {
     std::vector<Value> ValueList;
     explicit Instr(unsigned int opCode, unsigned int opCount = 0);
     Instr(unsigned int opCode, unsigned int opCount, const std::vector<Value> &valueList);
+    Value getOp(unsigned int index);
 };
 
 #endif //FOLDSCRIPT_VM_INSTR_H
