@@ -6,6 +6,8 @@ enable_testing()
 set(
         test_SRCS
         test_framework/test_script.cpp
+        test_framework/test_instr.cpp
+        test_framework/test_instable.cpp
 )
 
 include_directories(
