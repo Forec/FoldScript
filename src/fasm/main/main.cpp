@@ -9,17 +9,13 @@ DEFINE_string(i, "", "Fold-Script-Assemble source file to be assembled");
 DEFINE_string(o, "a.fec", "Output filename after assembled.");
 
 void logo() {
-    std::cout << "Fold-Script ASM Version " << VERSION_MAJOR
+    std::cout << "Fold-Script 汇编器    当前版本: " << VERSION_MAJOR
               << "." << VERSION_MINOR << std::endl
-              << "Source in https://github.com/forec/FoldScript" << std::endl
-              << std::endl;
+              << "GitHub: https://github.com/forec/FoldScript" << std::endl;
 }
 
 void usage() {
-    std::cout << "Usage:\t FASM -i Source.FASM [-o Executable.FEC]" << std::endl
-              << std::endl
-              << "\t- File extensions are not required." << std::endl
-              << "\t- Optional executable output file." << std::endl;
+    std::cout << "帮助:\t FASM [-i] Source.FASM [-o Executable.FEC]" << std::endl;
 }
 
 int main(int argc, char * argv[]) {
@@ -27,24 +23,29 @@ int main(int argc, char * argv[]) {
 
     logo();
 
-    if (FLAGS_i == "") {
+    std::string sourceFilename = FLAGS_i, targetFilename = FLAGS_o;
+
+    if (argc > 1 && FLAGS_i.empty()) {
+        sourceFilename = argv[1];
+    } else if (FLAGS_i == "") {
         usage();
         return 0;
     }
 
-    std::string sourceFilename = FLAGS_i;
+    if (targetFilename.empty())
+        targetFilename = "a.fec";
+
     std::transform(sourceFilename.begin(), sourceFilename.end(), sourceFilename.begin(), ::toupper);
     if (sourceFilename.rfind(FASM_FILE_EXT) == std::string::npos)
         sourceFilename += FASM_FILE_EXT;
-    std::string targetFilename = FLAGS_o;
     std::transform(targetFilename.begin(), targetFilename.end(), targetFilename.begin(), ::toupper);
     if (targetFilename.rfind(EXEC_FILE_EXT) == std::string::npos)
         targetFilename += EXEC_FILE_EXT;
 
     Parser * parser = new Parser();
     if (!parser->initFromFile(sourceFilename)) {
-        std::cerr << "无法读取源文件，请检查文件" << sourceFilename
-                  << "是否存在，当前用户是否对该文件有读权限。" << std::endl;
+        std::cerr << "失败: 无法读取源文件，请检查文件 \"" << sourceFilename
+                  << "\" 是否存在，或当前用户是否对该文件有读权限。" << std::endl;
         return 0;
     }
 
