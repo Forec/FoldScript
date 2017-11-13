@@ -24,7 +24,7 @@ bool SourceCode::initFromFile(const std::string &path) {
     source.clear();
     std::ifstream fin;
     fin.open(path, std::ios_base::in);
-    if (fin.bad())
+    if (fin.fail())
         return false;
     std::string sourceCode;
     std::string line;
