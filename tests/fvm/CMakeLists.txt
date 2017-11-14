@@ -8,6 +8,11 @@ set(
         test_framework/test_script.cpp
         test_framework/test_instr.cpp
         test_framework/test_instable.cpp
+        test_framework/test_rstack.cpp
+        test_framework/test_value.cpp
+        test_framework/test_functable.cpp
+        test_framework/test_hostapi.cpp
+        test_utils/test_utils.cpp
 )
 
 include_directories(
