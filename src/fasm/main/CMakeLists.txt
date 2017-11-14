@@ -12,10 +12,10 @@ link_directories(
 
 find_package(gflags REQUIRED)
 
-add_executable(FASM ${SRC_LIST})
+add_executable(fasm ${SRC_LIST})
 
 target_link_libraries(
-        FASM
+        fasm
         fasm-utils
         fasm-framework
         fasm-component

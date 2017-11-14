@@ -12,10 +12,10 @@ link_directories(
 
 find_package(gflags REQUIRED)
 
-add_executable(FVM ${SRC_LIST})
+add_executable(fvm ${SRC_LIST})
 
 target_link_libraries(
-        FVM
+        fvm
         gflags
         fvm-utils
         fvm-framework

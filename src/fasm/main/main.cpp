@@ -14,7 +14,7 @@ void logo() {
               << "GitHub: https://github.com/forec/FoldScript" << std::endl;
 }
 
-std::string usageMsg = "帮助:\t FASM [-i] Source.FASM [-o Executable.FEC]";
+std::string usageMsg = "帮助:\tfasm [-i] Source.fasm [-o Executable.fec]";
 
 int main(int argc, char * argv[]) {
     gflags::ParseCommandLineFlags(&argc, &argv, true);

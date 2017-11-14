@@ -258,14 +258,14 @@ std::string Script::status2string() {
     if (!isValid())
         return "文件 \"" + executableFile + "\" 加载失败！";
     std::ostringstream ss;
-    ss << "\"" << executableFile << "\" 加载成功!" << std::endl;
-    ss << "    文件版本: " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
-    ss << "    堆栈大小: " << stack->getSize() << std::endl;
-    ss << "    全局空间: " << uiGlobalDataSize << std::endl;
-    ss << "    函数定义: " << functions->getSize() << std::endl;
-    ss << "    指令长度: " << uiStreamSize << std::endl;
-    ss << "    系统调用: " << apis->getSize() << std::endl;
-    ss << "主函数" << (isMainFuncPresent ? "" : "不") << "存在"
+    ss << "文件 \"" << executableFile << "\" 元信息:" << std::endl;
+    ss << "  文件版本: " << VERSION_MAJOR << "." << VERSION_MINOR << std::endl;
+    ss << "  堆栈大小: " << stack->getSize() << std::endl;
+    ss << "  全局空间: " << uiGlobalDataSize << std::endl;
+    ss << "  函数定义: " << functions->getSize() << std::endl;
+    ss << "  指令长度: " << uiStreamSize << std::endl;
+    ss << "  系统调用: " << apis->getSize() << std::endl;
+    ss << "  主函数" << (isMainFuncPresent ? "" : "不") << "存在"
        << (isMainFuncPresent ? ", 主函数下标为 " + std::to_string(uiMainFuncIndex) : "") << std::endl;
     ss.flush();
     return ss.str();
