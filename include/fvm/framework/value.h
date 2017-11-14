@@ -21,7 +21,7 @@ struct Value {
         float fFloatLiteral;                    // 浮点型
         int iStackIndex;                        // 堆栈索引
         int iFuncIndex;                         // 函数索引
-        int uiInstrIndex;                       // 指令索引
+        unsigned int uiInstrIndex;              // 指令索引
         unsigned int uiHostAPICallIndex;        // 系统调用索引
         unsigned int uiReg;                     // 寄存器编号
     };
@@ -30,8 +30,8 @@ struct Value {
 
     Value();
     int toInt();
-    int toInstrIndex();
     int toFuncIndex();
+    unsigned int toInstrIndex();
     unsigned int toHostApiIndex();
     float toFloat();
     std::string toString();

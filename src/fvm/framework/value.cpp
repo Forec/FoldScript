@@ -65,7 +65,7 @@ int Value::toFuncIndex() {
     return iFuncIndex;
 }
 
-int Value::toInstrIndex() {
+unsigned int Value::toInstrIndex() {
     if (iType != OP_TYPE_INSTR_INDEX)
         return -1;
     return uiInstrIndex;

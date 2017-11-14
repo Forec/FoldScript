@@ -614,6 +614,12 @@ void Script::run() {
                 break;
             }
             case INSTR_RET: {
+                Value funcIndex = stack->pop();
+                Func currentFunc = functions->getFunction((unsigned int)funcIndex.iFuncIndex);
+                Value returnAddr = stack->getValue(stack->getTopIndex() - (currentFunc.uiLocalDataSize + 1));
+                stack->popFrame(currentFunc.uiStackFrameSize);
+                stack->setIFrameIndex(funcIndex.iOffsetIndex);
+                instructions->setCurrentIndex(returnAddr.toInstrIndex());
                 break;
             }
             case INSTR_CALLHOST: {

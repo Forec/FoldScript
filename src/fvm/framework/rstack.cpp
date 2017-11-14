@@ -16,7 +16,7 @@ RuntimeStack::~RuntimeStack() {
 void RuntimeStack::reset() {
     elems.clear();
     iFrameIndex = 0;
-    iTop = 0;
+    uiTop = 0;
     exception = Value{};
 }
 
@@ -24,9 +24,17 @@ void RuntimeStack::setSize(unsigned int size) {
     uiSize = size;
 }
 
+void RuntimeStack::setIFrameIndex(int frameIndex) {
+    iFrameIndex = frameIndex;
+}
+
 void RuntimeStack::pushFrame(unsigned int size) {
-    iTop += size;
-    iFrameIndex = iTop;
+    uiTop += size;
+    iFrameIndex = uiTop;
+}
+
+void RuntimeStack::popFrame(unsigned int size) {
+    uiTop -= size;
 }
 
 void RuntimeStack::fit() {
@@ -39,7 +47,7 @@ unsigned int RuntimeStack::getSize() {
 }
 
 unsigned int RuntimeStack::getTopIndex() {
-    return iTop;
+    return uiTop;
 }
 
 int RuntimeStack::resolveIndex(int iIndex) {
@@ -58,7 +66,7 @@ Value RuntimeStack::getValue(int iIndex) {
     return getValueRef(iIndex);
 }
 
-bool RuntimeStack::setValue(int iIndex, Value val) {
+bool RuntimeStack::setValue(int iIndex, const Value &val) {
     int rIndex = resolveIndex(iIndex);
     if (rIndex >= uiSize)
         return false;
@@ -67,16 +75,16 @@ bool RuntimeStack::setValue(int iIndex, Value val) {
     return true;
 }
 
-bool RuntimeStack::push(Value val) {
-    if (iTop >= uiSize)
+bool RuntimeStack::push(const Value &val) {
+    if (uiTop >= uiSize)
         return false;
     fit();
-    elems[iTop++] = val;
+    elems[uiTop++] = val;
     return true;
 }
 
 Value RuntimeStack::pop() {
-    if (iTop <= 0)
+    if (uiTop <= 0)
         return exception;
-    return elems[--iTop];
+    return elems[--uiTop];
 }
