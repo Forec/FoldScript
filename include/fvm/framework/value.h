@@ -31,6 +31,7 @@ struct Value {
     Value();
     int toInt();
     int toInstrIndex();
+    int toFuncIndex();
     unsigned int toHostApiIndex();
     float toFloat();
     std::string toString();

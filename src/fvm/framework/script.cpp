@@ -598,6 +598,19 @@ void Script::run() {
                 break;
             }
             case INSTR_CALL: {
+                int iFuncIndex = resolveOp(0).toFuncIndex();
+                if (iFuncIndex == -1)
+                    exitOnError("不存在的地址跳转");
+                Func dest = functions->getFunction((unsigned int)iFuncIndex);
+                Value returnAddr;
+                returnAddr.uiInstrIndex = instructions->getCurrentIndex() + 1;
+                stack->push(returnAddr);
+                stack->pushFrame(dest.uiLocalDataSize + 1);
+
+                Value funcIndex;
+                funcIndex.iFuncIndex = iFuncIndex;
+                stack->setValue(stack->getTopIndex() - 1, funcIndex);
+                instructions->setCurrentIndex(dest.uiEntryPoint);
                 break;
             }
             case INSTR_RET: {

@@ -32,6 +32,7 @@ public:
     void fit();
     void pushFrame(unsigned int size);
     unsigned int getSize();
+    unsigned int getTopIndex();
     int resolveIndex(int iIndex);
     Value getValue(int iIndex);
     Value &getValueRef(int iIndex);

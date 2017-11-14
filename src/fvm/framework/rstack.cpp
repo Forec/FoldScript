@@ -38,6 +38,10 @@ unsigned int RuntimeStack::getSize() {
     return uiSize;
 }
 
+unsigned int RuntimeStack::getTopIndex() {
+    return iTop;
+}
+
 int RuntimeStack::resolveIndex(int iIndex) {
     return iIndex < 0 ? iIndex + iFrameIndex : iIndex;
 }
