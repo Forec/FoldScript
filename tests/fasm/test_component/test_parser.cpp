@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <fstream>
 #include "parser.h"
 
 std::string SourceCode1 = \
@@ -95,4 +96,39 @@ TEST(ParserTest, ParserTest_LOOP_Test) {
     parser.assemble();
     std::string status = parser.status2string();
     EXPECT_EQ(StandardStatus2, status);
+}
+
+std::string exampleSrcPath = "../../example/fasm/loop.fasm";
+std::string exampleExePath = "../../example/fec/loop.fec";
+
+TEST(ParserTest, ParserTest_ASSEMBLE_Test) {
+    Parser parser;
+    parser.initFromFile(exampleSrcPath);
+    parser.assemble();
+    std::string exportName = "temp_test_parser.fec";
+    parser.setExecFilename(exportName);
+    parser.exportFEC();
+    std::ifstream verify, standard;
+    verify.open(exportName, std::ios_base::binary | std::ios_base::in);
+    standard.open(exampleExePath, std::ios_base::binary | std::ios_base::in);
+
+    EXPECT_TRUE(verify.good());
+    EXPECT_TRUE(standard.good());
+
+    unsigned int bufferSize = 8;
+    char vbuffer[bufferSize], sbuffer[bufferSize];
+    memset(vbuffer, 0, sizeof(vbuffer));
+    memset(sbuffer, 0, sizeof(sbuffer));
+    while (!verify.eof()) {
+        EXPECT_FALSE(standard.eof());
+        verify.read(vbuffer, bufferSize);
+        standard.read(sbuffer, bufferSize);
+        for (unsigned int i = 0; i < bufferSize; i++)
+            EXPECT_EQ(vbuffer[i], sbuffer[i]);
+    }
+
+    EXPECT_TRUE(verify.eof());
+    EXPECT_TRUE(standard.eof());
+    verify.close();
+    standard.close();
 }
