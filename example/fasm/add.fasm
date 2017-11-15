@@ -1,4 +1,4 @@
-setstacksize 20 ;; 设置堆栈大小              
+setstacksize 512 ;; 设置堆栈大小              
 Var Array[256]  ;; 声明数组 Array            
 Var X;          ;; 声明全局变量 X            
 Func MyAdd {    ;; 声明函数 MyAdd，将两个参数相加

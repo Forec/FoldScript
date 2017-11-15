@@ -66,6 +66,7 @@ void Script::reset() {
 
     stack->pushFrame(uiGlobalDataSize);
     stack->pushFrame(functions->getFunction(uiMainFuncIndex).uiStackFrameSize + 1);
+    fit();
 }
 
 void Script::fit() {
@@ -627,6 +628,7 @@ void Script::run() {
                     exitOnError("不存在的地址跳转");
                 Func dest = functions->getFunction((unsigned int)iFuncIndex);
                 Value returnAddr;
+                returnAddr.iType = OP_TYPE_INSTR_INDEX;
                 returnAddr.uiInstrIndex = instructions->getCurrentIndex() + 1;
                 stack->push(returnAddr);
                 stack->pushFrame(dest.uiLocalDataSize + 1);
@@ -734,8 +736,12 @@ std::string Script::formatOp(unsigned int uiOpIndex) {
             return std::to_string(opValue.toInt());
         case OP_TYPE_FLOAT:
             return std::to_string(opValue.toFloat());
-        case OP_TYPE_INSTR_INDEX:
-            return std::to_string(opValue.toInstrIndex());
+        case OP_TYPE_INSTR_INDEX: {
+            std::ostringstream ss;
+            ss << "0x" << std::setfill('0') << std::setw(8)
+               << std::hex << opValue.toInstrIndex();
+            return ss.str();
+        }
         case OP_TYPE_REG:
             return "Reg:" + std::to_string(opValue.uiReg);
         case OP_TYPE_FUNC_INDEX:
