@@ -7,6 +7,7 @@
 
 #include <string>
 
+extern char INSTR_TABLE[][16];
 unsigned long getCurrentTimestamp();
 
 void exitOnError(const std::string &msg);

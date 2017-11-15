@@ -99,4 +99,6 @@
 #define INSTR_PAUSE                   0x20     // 控制指令
 #define INSTR_EXIT                    0x21
 
+#define INSTR_COUNT                   0x22
+
 #endif //FOLDSCRIPT_VM_MACRO_H

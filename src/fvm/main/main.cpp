@@ -13,6 +13,7 @@ DEFINE_bool(u, false, "反汇编并打印汇编指令");
 DEFINE_bool(m, false, "显示 FEC 文件元信息");
 DEFINE_bool(d, false, "单步执行并打印汇编指令");
 DEFINE_bool(e, false, "输出信息同时执行脚本");
+DEFINE_bool(h, false, "查看帮助信息");
 
 void logo() {
     std::cout << "Fold-Script 虚拟机内核    当前版本: " << VERSION_MAJOR
@@ -27,12 +28,13 @@ std::string usageMsg = std::string("") +
         "    [-u]  反汇编并打印汇编指令\n" +
         "    [-m]  显示 FEC 文件元信息\n" +
         "    [-d]  单步执行并打印汇编指令\n" +
-        "    [-e]  在打印上述信息时仍执行脚本\n";
+        "    [-h]  帮助信息\n" +
+        "    [-e]  在打印上述信息时仍执行脚本";
 
 int main(int argc, char * argv[]) {
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
     gflags::SetUsageMessage(usageMsg);
     gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR));
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
 
     logo();
 
@@ -62,15 +64,17 @@ int main(int argc, char * argv[]) {
     }
 
     if (FLAGS_d) {
-        // TODO: 设置执行方式为单步执行
+        script->setDebugMode();
     }
 
     if (FLAGS_m) {
-        // TODO: 打印 FEC 文件元信息
         std::cout << script->status2string();
     }
 
-    if (FLAGS_e || !(FLAGS_u || FLAGS_m))
+    if (FLAGS_h)
+        std::cout << usageMsg << std::endl;
+
+    if (FLAGS_e || !(FLAGS_u || FLAGS_m || FLAGS_h))
         script->run();
 
     delete script;

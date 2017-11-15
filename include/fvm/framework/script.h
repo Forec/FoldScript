@@ -5,6 +5,8 @@
 #ifndef FOLDSCRIPT_VM_SCRIPT_H
 #define FOLDSCRIPT_VM_SCRIPT_H
 
+#include <vector>
+#include <string>
 #include "value.h"
 #include "rstack.h"
 #include "functable.h"
@@ -44,7 +46,10 @@ private:
     unsigned int uiGlobalDataSize;
     unsigned long ulPauseEndStamp;
 
+    std::vector<std::string> mnemonicTable;
+
     int iExitCode;
+    bool debug;
 
     std::string executableFile;
 
@@ -64,12 +69,14 @@ private:
     std::string formatOp(unsigned int uiOpIndex);
     int resolveOpType(unsigned int uiOpIndex);
     int resolveOpStackIndex(unsigned int uiOpIndex);
+    std::string singleStep();
 
 public:
     Script();
     ~Script();
     void reset();
     void setExecutableFile(const std::string & path);
+    void setDebugMode();
     bool isValid();
     Status loadHeader();
     std::string status2string();

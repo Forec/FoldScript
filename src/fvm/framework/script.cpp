@@ -9,6 +9,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include "macro.h"
 #include "utils.h"
 #include "script.h"
@@ -39,11 +40,20 @@ void Script::init() {
     isHeaderValid = true;
     isMainFuncPresent = false;
     isPaused = false;
+    debug = false;
 
     instructions->reset();
     stack->reset();
     functions->reset();
     apis->reset();
+
+    mnemonicTable.clear();
+    for (unsigned int i = 0; i < INSTR_COUNT; i++)
+        mnemonicTable.emplace_back(INSTR_TABLE[i]);
+}
+
+void Script::setDebugMode() {
+    debug = true;
 }
 
 void Script::reset() {
@@ -64,7 +74,7 @@ void Script::fit() {
 }
 
 void Script::setExecutableFile(const std::string &path) {
-    reset();
+    init();
     executableFile = path;
 }
 
@@ -251,6 +261,7 @@ bool Script::loadCode() {
     }
 
     reader.close();
+    reset();
     return true;
 }
 
@@ -273,6 +284,16 @@ std::string Script::status2string() {
 
 void Script::run() {
     bool exitExecution = false;
+
+    if (debug) {
+        std::cout << std::setfill(' ') << std::setw(10) << "Address";
+        std::cout << "\t" << std::setfill(' ')<< std::setw(12) << "Instruction";
+        std::cout << "\t" << std::setfill(' ')<< std::setw(12) << "Param 1";
+        std::cout << "\t" << std::setfill(' ')<< std::setw(12) << "Param 2";
+        std::cout << "\t" << std::setfill(' ')<< std::setw(12) << "...";
+        std::cout << std::endl;
+    }
+
     while (true) {
         if (isPaused) {                                                  // 当前脚本处于等待状态
             if (getCurrentTimestamp() >= ulPauseEndStamp)                // 检查是否可以激活 TODO：从忙等改为中断
@@ -282,6 +303,9 @@ void Script::run() {
         }
         unsigned int currentInstrIndex = instructions->getCurrentIndex();
         Instr currentInstr = instructions->getCurrentInstr();
+
+        if (debug)
+            std::cout << singleStep();
 
         switch (currentInstr.uiOpCode) {
             case INSTR_MOV:
@@ -707,14 +731,37 @@ std::string Script::formatOp(unsigned int uiOpIndex) {
         case OP_TYPE_NULL:
             return "NULL";
         case OP_TYPE_INT:
+            return std::to_string(opValue.toInt());
         case OP_TYPE_FLOAT:
+            return std::to_string(opValue.toFloat());
         case OP_TYPE_INSTR_INDEX:
-            return std::to_string(opValue.iIntLiteral);
+            return std::to_string(opValue.toInstrIndex());
+        case OP_TYPE_REG:
+            return "Reg:" + std::to_string(opValue.uiReg);
+        case OP_TYPE_FUNC_INDEX:
+            return "Func:" + std::to_string(opValue.iFuncIndex);
         case OP_TYPE_STRING:
             return "\"" + opValue.sStrLiteral + "\"";
         case OP_TYPE_HOST_API_CALL_INDEX:
             return apis->getCall(opValue.toHostApiIndex());
+        case OP_TYPE_ABS_STACK_INDEX:
+            return "Stack:" + std::to_string(opValue.iStackIndex);
+        case OP_TYPE_REL_STACK_INDEX:
+            return "Stack:" + std::to_string(opValue.iStackIndex) + "[" + std::to_string(opValue.iOffsetIndex) + "]";
         default:
             return "NOP";
     }
+}
+
+std::string Script::singleStep() {
+    unsigned int uiCurrentIndex = instructions->getCurrentIndex();
+    Instr currentInstr = instructions->getCurrentInstr();
+    std::ostringstream ss;
+    ss << "0x" << std::setfill('0')<< std::setw(8) << std::hex << uiCurrentIndex;
+    ss << "\t" << std::setfill(' ')<< std::setw(12) << mnemonicTable[currentInstr.uiOpCode];
+    for (unsigned int i = 0; i < currentInstr.ValueList.size(); ++i) {
+        ss << "\t" << std::setfill(' ')<< std::setw(12) << formatOp(i);
+    }
+    ss << std::endl;
+    return ss.str();
 }
