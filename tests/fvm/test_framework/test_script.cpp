@@ -12,7 +12,7 @@ std::string fecPath = "../../example/fec/ADD.FEC";
 std::string standardStatus =
         "文件 \"" + fecPath + "\" 元信息:\n  文件版本: " +
         std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR) +
-        "\n  堆栈大小: 20\n  全局空间: 257\n  函数定义: 2" +
+        "\n  堆栈大小: 512\n  全局空间: 257\n  函数定义: 2" +
         "\n  指令长度: 17\n  系统调用: 1\n  主函数存在, 主函数下标为 1\n";
 
 TEST(ScriptTest, ScriptTest_LOAD_Test) {

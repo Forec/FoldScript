@@ -350,7 +350,7 @@ void Parser::assemble() {
                                 if (labelNode.getIndex() == -1)                             // 行标签必须已定义
                                     codeError(ERROR_MSSG_UNDEFINED_LINE_LABEL);
                                 currentOp.iType = OP_TYPE_INSTR_INDEX;                      // 操作数类型为指令地址
-                                currentOp.uiInstrIndex = (unsigned int)labelNode.getIndex();
+                                currentOp.uiInstrIndex = (unsigned int)labelNode.getTargetIndex();
                             }
 
                             else if (currentOpTypes & OP_FLAG_TYPE_FUNC_NAME) {             // 此时标识符可能为函数名

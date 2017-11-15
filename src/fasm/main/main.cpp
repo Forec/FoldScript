@@ -36,11 +36,13 @@ int main(int argc, char * argv[]) {
     if (targetFilename.empty())
         targetFilename = "a.fec";
 
-    std::transform(sourceFilename.begin(), sourceFilename.end(), sourceFilename.begin(), ::toupper);
-    if (sourceFilename.rfind(FASM_FILE_EXT) == std::string::npos)
+    std::string tmpSourceFilename = sourceFilename;
+    std::transform(tmpSourceFilename.begin(), tmpSourceFilename.end(), tmpSourceFilename.begin(), ::toupper);
+    if (tmpSourceFilename.rfind(FASM_FILE_EXT) == std::string::npos)
         sourceFilename += FASM_FILE_EXT;
-    std::transform(targetFilename.begin(), targetFilename.end(), targetFilename.begin(), ::toupper);
-    if (targetFilename.rfind(EXEC_FILE_EXT) == std::string::npos)
+    std::string tmpTargetFilename = targetFilename;
+    std::transform(tmpTargetFilename.begin(), tmpTargetFilename.end(), tmpTargetFilename.begin(), ::toupper);
+    if (tmpTargetFilename.rfind(EXEC_FILE_EXT) == std::string::npos)
         targetFilename += EXEC_FILE_EXT;
 
     Parser * parser = new Parser();

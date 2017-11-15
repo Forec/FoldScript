@@ -10,6 +10,6 @@ LabelNode::LabelNode() {
 
 LabelNode::LabelNode(int index, unsigned int targetIndex, unsigned int funcIndex) {
     iIndex = index;
-    iTargetIndex = targetIndex;
-    iFuncIndex = funcIndex;
+    uiTargetIndex = targetIndex;
+    uiFuncIndex = funcIndex;
 }
